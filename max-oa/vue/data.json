@@ -1,0 +1,16 @@
+{
+    "success": true,
+    "code": 200,
+    "data": {
+        "list": [
+            {
+                "name": "lucy",
+                "age": 19
+            },
+            {
+                "name": "mary",
+                "age": 18
+            }
+        ]
+    }
+}

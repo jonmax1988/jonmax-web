@@ -1,0 +1,65 @@
+======================================手动安装=========
+# 重新安装 12.9.1，跳过 npm
+nvm install 12.9.1 --skip-npm
+
+# 然后手动安装 npm
+nvm use 24.11.0
+npm install -g npm@6.10.2 --prefix "D:\DevEnv\nvm\v12.9.1"
+
+打开 cli-6.10.2文件夹
+按 Ctrl+A全选所有文件和文件夹
+按 Ctrl+C复制
+打开 `D:\DevEnv\nvm\v12.9.1`文件夹
+=========================================================================
+淘宝NPM镜像（推荐）：
+npm config set registry https://registry.npmmirror.com/
+
+华为云镜像（确认可用）：
+npm config set registry https://mirrors.huaweicloud.com/repository/npm/
+
+===================================================
+
+# 恢复 nvm 镜像
+setx NVM_NODEJS_ORG_MIRROR ""
+
+# 恢复 npm 官方源
+npm config set registry https://registry.npmjs.org
+=============================================================================================================
+@echo off
+echo 正在设置 nvm 和 npm 国内镜像源...
+
+:: 设置 nvm 镜像源
+setx NVM_NODEJS_ORG_MIRROR https://npmmirror.com/mirrors/node/
+setx NVM_NODEJS_ORG_MIRROR https://npmmirror.com/mirrors/npm/
+
+:: 使用 nvm 安装 Node.js（示例）
+nvm install 12.22.12
+
+:: 切换到该版本
+nvm use 12.22.12
+
+:: 设置 npm 镜像
+npm config set registry https://registry.npmmirror.com
+
+echo 设置完成！
+echo Node.js 镜像：%NVM_NODEJS_ORG_MIRROR%
+npm config get registry
+pause
+================================================================================================================
+# 2. 本地安装 Babel
+npm install --save-dev @babel/core @babel/cli @babel/preset-env
+
+.babelrc 文件配置
+{
+    "presets": ["@babel/preset-env"],
+    "plugins": []
+  }
+
+  # 转换单个文件
+babel src/index.js --out-file dist/index.js
+
+# 转换整个目录
+babel src --out-dir dist
+
+# 使用预设
+babel src --out-dir dist --presets=@babel/preset-env

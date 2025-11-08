@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="vue.min.js"></script>
+<script src="axios.min.js"></script>
+
+<body>
+    <div id="app">
+        {{userList}}
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                userList: [],
+                message: "jon max"
+            },
+            methods: {
+                getList() {
+                    axios.get("data.json")
+                        //请求成功，得到接口/文件数据
+                        .then(response => {
+                            console.log(response)
+                           this.userList = response.data.data.list
+                        })
+                        //请求失败
+                        .catch(error => {
+                            console.log(error)
+                        })
+                }
+            },
+            created() {
+                this.getList()
+            },
+            mounted() {
+
+            }
+        });
+    </script>
+</body>
+
+</html>

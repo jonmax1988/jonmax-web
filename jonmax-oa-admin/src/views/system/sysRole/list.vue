@@ -12,10 +12,16 @@
         </el-row>
         <el-row style="display:flex">
           <el-button type="primary" icon="el-icon-search" size="mini" :loading="loading" @click="fetchData()">搜索</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetData">重置</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetData">重置</el-button>   
         </el-row>
       </el-form>
-    </div>    
+    </div>   
+    <br>
+    <!-- 工具条 -->
+    <div class="tools-div">
+        <el-button type="success" icon="el-icon-plus" size="mini" @click="add">添 加</el-button>
+        <el-button class="btn-add" size="mini" @click="batchRemove()" >批量删除</el-button>
+    </div> 
     <!-- 表格 -->
     <el-table
       v-loading="listLoading"
@@ -55,6 +61,22 @@
         layout="total, prev, pager, next, jumper"
         @current-change="fetchData"
     />
+
+     <el-dialog title="添加/修改" :visible.sync="dialogVisible" width="40%" >
+      <el-form ref="dataForm" :model="sysRole" label-width="150px" size="small" style="padding-right: 40px;">
+        <el-form-item label="角色名称">
+          <el-input v-model="sysRole.roleName"/>
+        </el-form-item>
+        <el-form-item label="角色编码">
+          <el-input v-model="sysRole.roleCode"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false" size="small" icon="el-icon-refresh-right">取 消</el-button>
+        <el-button type="primary" icon="el-icon-check" @click="saveOrUpdate()" size="small">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -71,6 +93,8 @@ export default {
             page: 1, // 页码
             limit: 10, // 每页记录数
             searchObj: {}, // 查询条件
+            dialogVisible:false, //是否弹框
+            sysRole:{},//用于封装表单的数据
             multipleSelection: []// 批量删除选中的记录列表
         }
     },
@@ -78,6 +102,11 @@ export default {
         this.fetchData()
     },
     methods:{//操作方法
+        //选择了复选框后，把所在的复选框的行的内容进行传递
+        handleSelectionChange(selection){
+            this.multipleSelection = selection
+            // console.log("选择表格的内容信息：===",this.multipleSelection);
+        },
         //条件分页方法
         fetchData(current = 1){
             this.page = current
@@ -86,7 +115,85 @@ export default {
                 this.list = response.data.records
                 this.total = response.data.total
             })
-        }
+        },
+        removeDataById(id){
+            // debugger
+            this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                return api.removeById(id)
+            }).then(response =>{
+                //刷新页面
+                this.fetchData()
+                //提示信息
+                this.$message.success(response.message || '删除成功')
+            })
+        },
+        //点击添加，弹框
+        add(){
+            this.dialogVisible = true
+        },
+        edit(id){
+            this.dialogVisible = true
+            //根据ID查询
+            this.fetchDataById(id)
+        
+        },
+        //添加或者修改
+        saveOrUpdate(){
+            this.saveBtnDisabled = true // 防止表单重复提交
+            if(!this.sysRole.id){
+                this.save()
+            }else{
+                this.update()
+            }
+        },
+        save(){
+            api.saveRole(this.sysRole).then(response =>{
+                this.$message.success(response.message || '操作成功')
+                this.dialogVisible = false
+                this.fetchData()
+            })
+        },
+        update(){
+            api.updateRole(this.sysRole).then(response => {
+                 this.$message.success(response.message || '操作成功')
+                 this.dialogVisible = false
+                 this.fetchData()
+            })
+        },
+         fetchDataById(id){
+            api.getRoleById(id).then(
+                response => this.sysRole = response.data
+            )
+         },
+         batchRemove(){
+              if (this.multipleSelection.length === 0) {
+                    this.$message.warning('请选择要删除的记录！')
+                    return
+                }
+                // debugger
+                this.$confirm('此操作将删除所选的记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let idList = []
+                    //选择复选框的数据再数组中this.multipleSelection
+                    this.multipleSelection.forEach(item => {
+                        idList.push(item.id)
+                    });
+                    console.log("===========",idList)
+                    return api.batchRemove(idList)
+                }).then(response =>{
+                    //刷新页面
+                    this.fetchData()
+                    //提示信息
+                    this.$message.success(response.message || '删除成功')
+                })  
+         }
     }
 
 }

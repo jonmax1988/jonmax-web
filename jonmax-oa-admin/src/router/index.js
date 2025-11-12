@@ -62,39 +62,26 @@ export const constantRoutes = [
       icon: 'el-icon-s-tools'
     },
     alwaysShow: true,
-    children: [
-      {
-        path: 'sysRole',
-        component: () => import('@/views/system/sysRole/list'),
-        meta: {
-          title: '角色管理',
-          icon: 'el-icon-s-help'
+          children: [
+        {
+          name: 'sysUser',
+          path: 'sysUser',
+          component: () => import('@/views/system/sysUser/list'),
+          meta: {
+            title: '用户管理',
+            icon: 'el-icon-s-custom'
+          },
         },
-      }
-    ]
-  },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
+        {
+          path: 'sysRole',
+          component: () => import('@/views/system/sysRole/list'),
+          meta: {
+            title: '角色管理',
+            icon: 'el-icon-s-help'
+          },
+        }
+      ]
+    },
   {
     path: '/form',
     component: Layout,

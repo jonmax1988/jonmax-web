@@ -1,75 +1,75 @@
 import request from '@/utils/request'
 
-const api_name = '/system/admin/sysRole'
-export default{
-    
-    //条件分页查询 /system/admin/sysRole {page}/{limit}
-    getPageList(crreunt,limit,searchObj){
+const api_name = '/admin/system/sysRole'
+
+export default {
+    //角色列表-条件分页查询
+    getPageList(current,limit,searchObj) {
         return request({
-            url:`${api_name}/${crreunt}/${limit}`,
-            method:'get',
-            //普通对象params：对象参数名称
-            //json data:对象参数名称
+            url: `${api_name}/${current}/${limit}`,
+            method: 'get',
+            //如果普通对象参数写法 params:对象参数名称
+            //如果使用json格式传递，data:对象参数名称
             params:searchObj
         })
     },
-    //角色删除 /delete/{id}
-    removeById(id){
+    //角色删除
+    removeById(id) {
         return request({
-            url:`${api_name}/delete/${id}`,
-            method:'delete'
+            url: `${api_name}/remove/${id}`,
+            method: 'delete'
         })
     },
-    //添加角色 save
-      saveRole(role){
+    //findAll
+     findAll() {
         return request({
-            url:`${api_name}/save`,
-            method:'post',
+            url: `${api_name}/findAll`,
+            method: 'get'
+        })
+    },
+    //角色添加
+    saveRole(role) {
+        return request({
+            url: `${api_name}/save`,
+            method: 'post',
             data:role
         })
     },
-    //添加角色 save /update
-    updateRole(role){
+    //根据id查询
+    getById(id) {
         return request({
-            url:`${api_name}/update`,
-            method:'put',
-            data:role
+          url: `${api_name}/get/${id}`,
+          method: 'get'
         })
     },
-    //根据ID的查询用于数据显示 /get/{id}
-    getRoleById(id){
+    //修改  
+    updateById(role) {
         return request({
-            url:`${api_name}/get/${id}`,
-            method:'get'
+            url: `${api_name}/update`,
+            method: 'put',
+            data: role
         })
     },
-    //根据ID的查询用于数据显示 /get/{id}
-    findAll(){
+    //批量删除
+    batchRemove(idList) {
         return request({
-            url:`${api_name}/findAll`,
-            method:'get'
-        })
-    },
-    //根据ID进行批量删除 deleteBatch
-    batchRemove(idList){
-        return request({
-            url:`${api_name}/deleteBatch`,
-            method:'delete',
-            data:idList
+            url: `${api_name}/batchRemove`,
+            method: 'delete',
+            data: idList
         })
     },
     getRoles(adminId) {
-    return request({
-        url: `${api_name}/toAssign/${adminId}`,
-        method: 'get'
-    })
-    },
-
+        return request({
+          url: `${api_name}/toAssign/${adminId}`,
+          method: 'get'
+        })
+      },
+      
     assignRoles(assginRoleVo) {
-    return request({
-        url: `${apiBaseUrl}/doAssign`,
-        method: 'post',
-        data: assginRoleVo
-    })
+        return request({
+            url: `${api_name}/doAssign`,
+            method: 'post',
+            data: assginRoleVo
+        })
     }
 }

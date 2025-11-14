@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>艺术风格CYGL图标生成器 - 修复下载问题版</title>
+    <style>
+        /* 保持原有样式不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 其他样式保持不变... */
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .icon-preview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+        }
+        
+        .icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 15px;
+        }
+        
+        .icon-label {
+            margin-top: 15px;
+            font-size: 1em;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .icon {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        
+        .icon:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .icon:hover::before {
+            transform: rotate(45deg) translate(10%, 10%);
+        }
+        
+        .main-text {
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to bottom, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        
+        .sub-text {
+            opacity: 0.9;
+        }
+        
+        .svg-icon {
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .size-controls input {
+            width: 100px;
+        }
+        
+        .text-style-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .style-btn {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .style-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .style-btn.active {
+            background: #1a73e8;
+        }
+        
+        label {
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        input, select {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .code-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-section h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .code-section h3::before {
+            content: '{}';
+            margin-right: 10px;
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        code {
+            color: #f8f8f2;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 220px;
+            margin: 30px auto;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #0d62c9, #0b3d8a);
+        }
+        
+        .tips {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #1a73e8;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .tips h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tips h3::before {
+            content: '💡';
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        
+        .tips ul {
+            padding-left: 20px;
+        }
+        
+        .tips li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .preset-sizes {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .preset-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .preset-btn.active {
+            background: #1a73e8;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            .icon-preview {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .size-controls {
+                flex-direction: column;
+            }
+            
+            .size-controls input {
+                width: 100%;
+            }
+            
+            .text-style-controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>艺术风格CYGL图标生成器</h1>
+        <p class="subtitle">已修复SVG下载后无法打开的问题</p>
+        
+        <div class="icon-preview">
+            <div class="icon-container">
+                <div class="icon" id="cssIcon" style="width: 184px; height: 102px;">
+                    <div class="main-text" id="cssMainText" style="font-size: 28px; font-family: 'Courier New', monospace; font-weight: 800; font-style: normal;">CYGL</div>
+                    <div class="sub-text" id="cssSubText" style="font-size: 14px; font-family: 'Times New Roman', serif; font-weight: 500; font-style: normal;">创意管理平台</div>
+                </div>
+                <div class="icon-label">CSS实现</div>
+            </div>
+            
+            <div class="icon-container">
+                <svg class="svg-icon" id="svgIcon" width="184" height="102" viewBox="0 0 184 102" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#1a73e8"/>
+                            <stop offset="100%" stop-color="#0d47a1"/>
+                        </linearGradient>
+                        <linearGradient id="textGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="100%" stop-color="#e0e0e0"/>
+                        </linearGradient>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+                        </filter>
+                    </defs>
+                    <rect width="184" height="102" rx="12" fill="url(#bgGradient)"/>
+                    <text id="svgMainText" x="92" y="50" text-anchor="middle" dominant-baseline="middle" fill="url(#textGradient)" font-family="Courier New, monospace" font-size="28" font-weight="800" font-style="normal" letter-spacing="1.5" filter="url(#shadow)">CYGL</text>
+                    <text id="svgSubText" x="92" y="75" text-anchor="middle" dominant-baseline="middle" fill="rgba(255,255,255,0.9)" font-family="Times New Roman, serif" font-size="14" font-weight="500" font-style="normal">创意管理平台</text>
+                </svg>
+                <div class="icon-label">SVG实现（推荐）</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="bgColor1">背景颜色 1</label>
+                <input type="color" id="bgColor1" value="#1a73e8">
+            </div>
+            
+            <div class="control-group">
+                <label for="bgColor2">背景颜色 2</label>
+                <input type="color" id="bgColor2" value="#0d47a1">
+            </div>
+            
+            <div class="control-group">
+                <label for="mainText">主文字内容</label>
+                <input type="text" id="mainText" value="CYGL" maxlength="10">
+            </div>
+            
+            <div class="control-group">
+                <label for="mainFont">主文字字体</label>
+                <select id="mainFont">
+                    <option value="Arial Rounded MT Bold">Arial Rounded MT Bold</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New" selected>Courier New</option>
+                    <option value="Impact">Impact</option>
+                    <option value="Comic Sans MS">Comic Sans MS</option>
+                    <option value="Microsoft YaHei">微软雅黑</option>
+                    <option value="SimHei">黑体</option>
+                    <option value="SimSun">宋体</option>
+                </select>
+                <div class="text-style-controls">
+                    <button class="style-btn active" id="mainBoldBtn" data-style="bold">B <strong>粗体</strong></button>
+                    <button class="style-btn" id="mainItalicBtn" data-style="italic">I <em>斜体</em></button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="subText">底部汉字</label>
+                <input type="text" id="subText" value="创意管理平台" maxlength="10">
+            </div>
+            
+            <div class="control-group">
+                <label for="subFont">底部汉字字体</label>
+                <select id="subFont">
+                    <option value="Microsoft YaHei">微软雅黑</option>
+                    <option value="SimHei">黑体</option>
+                    <option value="SimSun">宋体</option>
+                    <option value="Arial Rounded MT Bold">Arial Rounded MT Bold</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman" selected>Times New Roman</option>
+                </select>
+                <div class="text-style-controls">
+                    <button class="style-btn" id="subBoldBtn" data-style="bold">B <strong>粗体</strong></button>
+                    <button class="style-btn" id="subItalicBtn" data-style="italic">I <em>斜体</em></button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="iconWidth">图标宽度 (px)</label>
+                <div class="size-controls">
+                    <input type="number" id="iconWidth" value="184" min="50" max="1000" step="1">
+                </div>
+                <div class="preset-sizes">
+                    <button class="preset-btn" data-width="108" data-height="124">108×124</button>
+                    <button class="preset-btn active" data-width="184" data-height="102">184×102</button>
+                    <button class="preset-btn" data-width="200" data-height="100">200×100</button>
+                    <button class="preset-btn" data-width="150" data-height="75">150×75</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="iconHeight">图标高度 (px)</label>
+                <div class="size-controls">
+                    <input type="number" id="iconHeight" value="102" min="30" max="1000" step="1">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="mainFontSize">主文字大小</label>
+                <select id="mainFontSize">
+                    <option value="20">20px</option>
+                    <option value="24">24px</option>
+                    <option value="28" selected>28px</option>
+                    <option value="32">32px</option>
+                    <option value="36">36px</option>
+                    <option value="40">40px</option>
+                    <option value="48">48px</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="subFontSize">底部文字大小</label>
+                <select id="subFontSize">
+                    <option value="10">10px</option>
+                    <option value="12">12px</option>
+                    <option value="14" selected>14px</option>
+                    <option value="16">16px</option>
+                    <option value="18">18px</option>
+                    <option value="20">20px</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="tips">
+            <h3>修复说明</h3>
+            <ul>
+                <li><strong>核心问题解决：</strong>修复了SVG属性中引号冲突导致的解析错误（中文字体名称使用单引号而非双引号）</li>
+                <li><strong>格式严格校验：</strong>确保所有SVG属性值正确闭合，特殊字符自动转义</li>
+                <li><strong>兼容性增强：</strong>生成的SVG文件可被浏览器、设计软件（如Figma、Illustrator）正常打开</li>
+            </ul>
+        </div>
+        
+        <div class="code-section">
+            <h3>SVG代码（可直接用于前端）</h3>
+            <pre id="svgCode"><code>&lt;svg width="184" height="102" viewBox="0 0 184 102" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#1a73e8"/&gt;
+      &lt;stop offset="100%" stop-color="#0d47a1"/&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id="textGradient" x1="0%" y1="0%" x2="0%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#ffffff"/&gt;
+      &lt;stop offset="100%" stop-color="#e0e0e0"/&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"&gt;
+      &lt;feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+  &lt;rect width="184" height="102" rx="12" fill="url(#bgGradient)"/&gt;
+  &lt;text x="92" y="50" text-anchor="middle" dominant-baseline="middle" fill="url(#textGradient)" font-family="Courier New, monospace" font-size="28" font-weight="800" font-style="normal" letter-spacing="1.5" filter="url(#shadow)"&gt;CYGL&lt;/text&gt;
+  &lt;text x="92" y="75" text-anchor="middle" dominant-baseline="middle" fill="rgba(255,255,255,0.9)" font-family="Times New Roman, serif" font-size="14" font-weight="500" font-style="normal"&gt;创意管理平台&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+        </div>
+        
+        <div class="code-section">
+            <h3>CSS代码（备用方案）</h3>
+            <pre id="cssCode"><code>.cygl-icon {
+  width: 184px;
+  height: 102px;
+  background: linear-gradient(135deg, #1a73e8, #0d47a1);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cygl-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg);
+}
+
+.cygl-main-text {
+  background: linear-gradient(to bottom, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  font-family: 'Courier New', monospace;
+  font-size: 28px;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 1.5px;
+}
+
+.cygl-sub-text {
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  opacity: 0.9;
+  font-family: 'Times New Roman', serif;
+}</code></pre>
+        </div>
+        
+        <button class="download-btn" id="downloadBtn">下载SVG图标</button>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const bgColor1Input = document.getElementById('bgColor1');
+        const bgColor2Input = document.getElementById('bgColor2');
+        const mainTextInput = document.getElementById('mainText');
+        const mainFontSelect = document.getElementById('mainFont');
+        const subTextInput = document.getElementById('subText');
+        const subFontSelect = document.getElementById('subFont');
+        const iconWidthInput = document.getElementById('iconWidth');
+        const iconHeightInput = document.getElementById('iconHeight');
+        const mainFontSizeSelect = document.getElementById('mainFontSize');
+        const subFontSizeSelect = document.getElementById('subFontSize');
+        const svgCodeElement = document.getElementById('svgCode');
+        const cssCodeElement = document.getElementById('cssCode');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        
+        // 样式按钮
+        const mainBoldBtn = document.getElementById('mainBoldBtn');
+        const mainItalicBtn = document.getElementById('mainItalicBtn');
+        const subBoldBtn = document.getElementById('subBoldBtn');
+        const subItalicBtn = document.getElementById('subItalicBtn');
+        
+        // 获取图标元素
+        const cssIcon = document.getElementById('cssIcon');
+        const cssMainText = document.getElementById('cssMainText');
+        const cssSubText = document.getElementById('cssSubText');
+        const svgIcon = document.getElementById('svgIcon');
+        const svgMainText = document.getElementById('svgMainText');
+        const svgSubText = document.getElementById('svgSubText');
+        
+        // 字体样式状态
+        let mainTextStyles = {
+            bold: true,
+            italic: false
+        };
+        
+        let subTextStyles = {
+            bold: false,
+            italic: false
+        };
+        
+        // 【核心修复】字体映射表使用单引号包裹中文字体名，避免与SVG属性的双引号冲突
+        const fontMapping = {
+            'Arial Rounded MT Bold': 'Arial Rounded MT Bold, Arial, sans-serif',
+            'Arial': 'Arial, Helvetica, sans-serif',
+            'Verdana': 'Verdana, Geneva, sans-serif',
+            'Georgia': 'Georgia, serif',
+            'Times New Roman': 'Times New Roman, Times, serif',
+            'Courier New': 'Courier New, Courier, monospace',
+            'Impact': 'Impact, Charcoal, sans-serif',
+            'Comic Sans MS': 'Comic Sans MS, cursive, sans-serif',
+            'Microsoft YaHei': "Microsoft YaHei, '微软雅黑', SimHei, sans-serif",  // 单引号包裹中文
+            'SimHei': "SimHei, '黑体', Microsoft YaHei, sans-serif",
+            'SimSun': "SimSun, '宋体', serif"
+        };
+        
+        // 转义特殊字符，防止破坏SVG结构
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/[&<>"']/g, function(match) {
+                const entities = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return entities[match];
+            });
+        }
+        
+        // 更新图标和代码
+        function updateIcon() {
+            const bgColor1 = bgColor1Input.value;
+            const bgColor2 = bgColor2Input.value;
+            const mainText = mainTextInput.value;
+            const mainFont = mainFontSelect.value;
+            const subText = subTextInput.value;
+            const subFont = subFontSelect.value;
+            let width = parseInt(iconWidthInput.value);
+            let height = parseInt(iconHeightInput.value);
+            const mainFontSize = parseInt(mainFontSizeSelect.value);
+            const subFontSize = parseInt(subFontSizeSelect.value);
+            
+            // 验证输入值
+            if (isNaN(width) || width < 50) width = 50;
+            if (width > 1000) width = 1000;
+            if (isNaN(height) || height < 30) height = 30;
+            if (height > 1000) height = 1000;
+            iconWidthInput.value = width;
+            iconHeightInput.value = height;
+            
+            // 计算圆角
+            const borderRadius = Math.min(width, height) * 0.065;
+            
+            // 更新CSS图标
+            cssIcon.style.width = width + 'px';
+            cssIcon.style.height = height + 'px';
+            cssIcon.style.borderRadius = borderRadius + 'px';
+            cssIcon.style.background = `linear-gradient(135deg, ${bgColor1}, ${bgColor2})`;
+            
+            // 更新CSS文字
+            cssMainText.textContent = mainText;
+            cssMainText.style.fontSize = mainFontSize + 'px';
+            cssMainText.style.fontFamily = fontMapping[mainFont] || mainFont;
+            cssMainText.style.fontWeight = mainTextStyles.bold ? 'bold' : 'normal';
+            cssMainText.style.fontStyle = mainTextStyles.italic ? 'italic' : 'normal';
+            
+            cssSubText.textContent = subText;
+            cssSubText.style.fontSize = subFontSize + 'px';
+            cssSubText.style.fontFamily = fontMapping[subFont] || subFont;
+            cssSubText.style.fontWeight = subTextStyles.bold ? 'bold' : 'normal';
+            cssSubText.style.fontStyle = subTextStyles.italic ? 'italic' : 'normal';
+            
+            // 更新SVG图标
+            svgIcon.setAttribute('width', width);
+            svgIcon.setAttribute('height', height);
+            svgIcon.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            
+            const rect = svgIcon.querySelector('rect');
+            rect.setAttribute('width', width);
+            rect.setAttribute('height', height);
+            rect.setAttribute('rx', borderRadius);
+            
+            // 更新渐变
+            const bgGradient = svgIcon.querySelector('#bgGradient');
+            bgGradient.innerHTML = `
+                <stop offset="0%" stop-color="${bgColor1}"/>
+                <stop offset="100%" stop-color="${bgColor2}"/>
+            `;
+            
+            // 更新SVG主文字
+            svgMainText.textContent = mainText;
+            svgMainText.setAttribute('font-size', mainFontSize);
+            const mainFontFamily = fontMapping[mainFont] || mainFont;
+            svgMainText.setAttribute('font-family', mainFontFamily);
+            svgMainText.setAttribute('font-weight', mainTextStyles.bold ? 'bold' : 'normal');
+            svgMainText.setAttribute('font-style', mainTextStyles.italic ? 'italic' : 'normal');
+            
+            // 文字居中
+            const mainTextX = width / 2;
+            const mainTextY = (height * 0.45) + (mainFontSize * 0.15);
+            svgMainText.setAttribute('x', mainTextX);
+            svgMainText.setAttribute('y', mainTextY);
+            svgMainText.setAttribute('text-anchor', 'middle');
+            svgMainText.setAttribute('dominant-baseline', 'middle');
+            
+            // 更新SVG副文字
+            svgSubText.textContent = subText;
+            svgSubText.setAttribute('font-size', subFontSize);
+            const subFontFamily = fontMapping[subFont] || subFont;
+            svgSubText.setAttribute('font-family', subFontFamily);
+            svgSubText.setAttribute('font-weight', subTextStyles.bold ? 'bold' : 'normal');
+            svgSubText.setAttribute('font-style', subTextStyles.italic ? 'italic' : 'normal');
+            
+            // 底部文字位置
+            const subTextX = width / 2;
+            let subTextY = mainTextY + (mainFontSize * 0.7);
+            const bottomMargin = subFontSize * 1.2;
+            if (subTextY + (subFontSize / 2) > height - bottomMargin) {
+                subTextY = height - bottomMargin;
+            }
+            svgSubText.setAttribute('x', subTextX);
+            svgSubText.setAttribute('y', subTextY);
+            svgSubText.setAttribute('text-anchor', 'middle');
+            svgSubText.setAttribute('dominant-baseline', 'middle');
+            
+            // 更新代码显示
+            updateCodeDisplay(bgColor1, bgColor2, mainText, mainFont, subText, subFont, 
+                             width, height, mainFontSize, subFontSize, borderRadius, 
+                             mainTextX, mainTextY, subTextX, subTextY, mainTextStyles, subTextStyles);
+        }
+        
+        // 更新代码显示（确保SVG属性格式正确）
+        function updateCodeDisplay(bgColor1, bgColor2, mainText, mainFont, subText, subFont, 
+                                  width, height, mainFontSize, subFontSize, borderRadius, 
+                                  mainTextX, mainTextY, subTextX, subTextY, mainStyles, subStyles) {
+            const escapedMainText = escapeHtml(mainText);
+            const escapedSubText = escapeHtml(subText);
+            const mainFontFamily = fontMapping[mainFont] || mainFont;
+            const subFontFamily = fontMapping[subFont] || subFont;
+            
+            // 【核心修复】生成SVG代码时确保属性值正确闭合，中文字体名用单引号
+            svgCodeElement.innerHTML = `<code>&lt;svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="${bgColor1}"/&gt;
+      &lt;stop offset="100%" stop-color="${bgColor2}"/&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id="textGradient" x1="0%" y1="0%" x2="0%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#ffffff"/&gt;
+      &lt;stop offset="100%" stop-color="#e0e0e0"/&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"&gt;
+      &lt;feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+  &lt;rect width="${width}" height="${height}" rx="${borderRadius}" fill="url(#bgGradient)"/&gt;
+  &lt;text x="${mainTextX}" y="${mainTextY.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="url(#textGradient)" font-family="${mainFontFamily}" font-size="${mainFontSize}" font-weight="${mainStyles.bold ? 'bold' : 'normal'}" font-style="${mainStyles.italic ? 'italic' : 'normal'}" letter-spacing="1.5" filter="url(#shadow)"&gt;${escapedMainText}&lt;/text&gt;
+  &lt;text x="${subTextX}" y="${subTextY.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="rgba(255,255,255,0.9)" font-family="${subFontFamily}" font-size="${subFontSize}" font-weight="${subStyles.bold ? 'bold' : 'normal'}" font-style="${subStyles.italic ? 'italic' : 'normal'}"&gt;${escapedSubText}&lt;/text&gt;
+&lt;/svg&gt;</code>`;
+            
+            // 更新CSS代码
+            cssCodeElement.innerHTML = `<code>.cygl-icon {
+  width: ${width}px;
+  height: ${height}px;
+  background: linear-gradient(135deg, ${bgColor1}, ${bgColor2});
+  border-radius: ${borderRadius}px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cygl-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg);
+}
+
+.cygl-main-text {
+  background: linear-gradient(to bottom, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  font-family: ${mainFontFamily.includes(',') ? mainFontFamily : `"${mainFontFamily}"`};
+  font-size: ${mainFontSize}px;
+  font-weight: ${mainStyles.bold ? 'bold' : 'normal'};
+  font-style: ${mainStyles.italic ? 'italic' : 'normal'};
+  letter-spacing: 1.5px;
+}
+
+.cygl-sub-text {
+  font-size: ${subFontSize}px;
+  font-weight: ${subStyles.bold ? 'bold' : 'normal'};
+  font-style: ${subStyles.italic ? 'italic' : 'normal'};
+  opacity: 0.9;
+  font-family: ${subFontFamily.includes(',') ? subFontFamily : `"${subFontFamily}"`};
+}</code>`;
+        }
+        
+        // 下载SVG图标（确保代码正确解码）
+        function downloadSVG() {
+            try {
+                // 解码HTML实体，确保SVG代码无转义残留
+                const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+${svgCodeElement.textContent
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")}`;  // 确保单引号正确还原
+                
+                const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${mainTextInput.value.trim() || 'cygl-icon'}.svg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('下载SVG失败:', error);
+                alert('下载SVG时发生错误，请重试');
+            }
+        }
+        
+        // 切换文字样式
+        function toggleTextStyle(styleType, textType) {
+            if (textType === 'main') {
+                mainTextStyles[styleType] = !mainTextStyles[styleType];
+                if (styleType === 'bold') {
+                    mainBoldBtn.classList.toggle('active', mainTextStyles.bold);
+                } else {
+                    mainItalicBtn.classList.toggle('active', mainTextStyles.italic);
+                }
+            } else {
+                subTextStyles[styleType] = !subTextStyles[styleType];
+                if (styleType === 'bold') {
+                    subBoldBtn.classList.toggle('active', subTextStyles.bold);
+                } else {
+                    subItalicBtn.classList.toggle('active', subTextStyles.italic);
+                }
+            }
+            updateIcon();
+        }
+        
+        // 预设尺寸按钮事件
+        presetButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const width = button.getAttribute('data-width');
+                const height = button.getAttribute('data-height');
+                
+                iconWidthInput.value = width;
+                iconHeightInput.value = height;
+                
+                presetButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                updateIcon();
+            });
+        });
+        
+        // 手动输入尺寸事件
+        function handleManualSizeInput() {
+            presetButtons.forEach(btn => btn.classList.remove('active'));
+            updateIcon();
+        }
+        
+        // 绑定事件
+        bgColor1Input.addEventListener('input', updateIcon);
+        bgColor2Input.addEventListener('input', updateIcon);
+        mainTextInput.addEventListener('input', updateIcon);
+        mainFontSelect.addEventListener('change', updateIcon);
+        subTextInput.addEventListener('input', updateIcon);
+        subFontSelect.addEventListener('change', updateIcon);
+        iconWidthInput.addEventListener('input', handleManualSizeInput);
+        iconHeightInput.addEventListener('input', handleManualSizeInput);
+        mainFontSizeSelect.addEventListener('change', updateIcon);
+        subFontSizeSelect.addEventListener('change', updateIcon);
+        downloadBtn.addEventListener('click', downloadSVG);
+        
+        mainBoldBtn.addEventListener('click', () => toggleTextStyle('bold', 'main'));
+        mainItalicBtn.addEventListener('click', () => toggleTextStyle('italic', 'main'));
+        subBoldBtn.addEventListener('click', () => toggleTextStyle('bold', 'sub'));
+        subItalicBtn.addEventListener('click', () => toggleTextStyle('italic', 'sub'));
+        
+        // 初始化
+        updateIcon();
+    </script>
+</body>
+</html>

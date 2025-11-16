@@ -1,6 +1,6 @@
 <template>
-    <div class="app-container">
-     <!--查询表单-->
+  <div class="app-container">
+    <!--查询表单-->
     <div class="search-div">
       <el-form label-width="70px" size="small">
         <el-row>
@@ -12,16 +12,10 @@
         </el-row>
         <el-row style="display:flex">
           <el-button type="primary" icon="el-icon-search" size="mini" :loading="loading" @click="fetchData()">搜索</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetData">重置</el-button>   
+          <el-button icon="el-icon-refresh" size="mini" @click="resetData">重置</el-button>
         </el-row>
       </el-form>
-    </div>   
-    <br>
-    <!-- 工具条 -->
-    <div class="tools-div">
-        <el-button type="success" icon="el-icon-plus" size="mini" :disabled="$hasBP('bnt.sysRole.add')  === false" @click="add">添 加</el-button>
-        <el-button class="btn-add" size="mini" @click="batchRemove()" >批量删除</el-button>
-    </div> 
+    </div>
     <!-- 表格 -->
     <el-table
       v-loading="listLoading"
@@ -53,6 +47,11 @@
         </template>
       </el-table-column>
     </el-table>
+<!-- 工具条 -->
+    <div class="tools-div">
+        <el-button type="success" icon="el-icon-plus" size="mini" :disabled="$hasBP('bnt.sysRole.add')  === false" @click="add">添 加</el-button>
+        <el-button class="btn-add" size="mini" @click="batchRemove()" >批量删除</el-button>
+    </div>
     <!-- 分页组件 -->
     <el-pagination
         :current-page="page"
@@ -63,7 +62,7 @@
         @current-change="fetchData"
     />
 
-     <el-dialog title="添加/修改" :visible.sync="dialogVisible" width="40%" >
+    <el-dialog title="添加/修改" :visible.sync="dialogVisible" width="40%" >
       <el-form ref="dataForm" :model="sysRole" label-width="150px" size="small" style="padding-right: 40px;">
         <el-form-item label="角色名称">
           <el-input v-model="sysRole.roleName"/>
@@ -82,124 +81,137 @@
 </template>
 
 <script>
-//引入定义接口的js文件
+//引入定义接口js文件
 import api from '@/api/system/sysRole'
+
 export default {
     //vue代码结构
     //初始值
-    data(){
+    data() {
         return {
-            list: [], // 列表
-            total: 0, // 总记录数
-            page: 1, // 页码
-            limit: 10, // 每页记录数
-            searchObj: {}, // 查询条件
-            dialogVisible:false, //是否弹框
-            sysRole:{},//用于封装表单的数据
-            multipleSelection: []// 批量删除选中的记录列表
+            list:[],//角色列表
+            page:1,//当前页
+            limit:3,//每页显示记录数
+            total:0,//总记录数
+            searchObj:{},//条件对象
+
+            selections:[],//多个复选框值
+            sysRole:{},//封装表单角色数据
+            dialogVisible:false//是否弹框
         }
     },
-    created(){//渲染之前的
+    created() { //渲染之前执行
         this.fetchData()
     },
-    methods:{//操作方法
-        //录音跳转
+    methods:{ //操作方法
+        //跳转分配菜单页面
         showAssignAuth(row) {
           this.$router.push('/system/assignAuth?id='+row.id+'&roleName='+row.roleName);
         },
-        //选择了复选框后，把所在的复选框的行的内容进行传递
-        handleSelectionChange(selection){
-            this.multipleSelection = selection
-            // console.log("选择表格的内容信息：===",this.multipleSelection);
+        //选择复选框，把复选框所在行内容传递
+        handleSelectionChange(selection) {
+            this.selections = selection
+            console.log(this.selections)
         },
-        //条件分页方法
-        fetchData(current = 1){
-            this.page = current
-            api.getPageList(this.page,this.limit,this.searchObj)
-            .then(response => {
-                this.list = response.data.records
-                this.total = response.data.total
-            })
-        },
-        removeDataById(id){
-            // debugger
-            this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+        //批量删除
+        batchRemove() {
+            //判断
+            if(this.selections.length == 0) {
+                this.$message.warning('请选择要删除的记录！')
+                return
+            }
+            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                return api.removeById(id)
-            }).then(response =>{
-                //刷新页面
+                // [1,2,3]
+                var idList = []
+                //选择复选框数据在数组里面 this.selections
+                this.selections.forEach(item => {
+                    var id = item.id
+                    idList.push(id)
+                });
+                return api.batchRemove(idList)
+            }).then(response => {
+                this.$message.success(response.message)
                 this.fetchData()
-                //提示信息
-                this.$message.success(response.message || '删除成功')
             })
         },
-        //点击添加，弹框
-        add(){
+        //点击修改，弹出框，根据id查询数据显示
+        edit(id) {
+            //弹出框
             this.dialogVisible = true
-        },
-        edit(id){
-            this.dialogVisible = true
-            //根据ID查询
+            //根据id查询
             this.fetchDataById(id)
-        
+        },
+        //根据id查询
+        fetchDataById(id) {
+            api.getById(id)
+                .then(response => {
+                    this.sysRole = response.data
+                })
+        },
+        //点击添加弹出框
+        add() {
+            this.dialogVisible = true
         },
         //添加或者修改
-        saveOrUpdate(){
-            this.saveBtnDisabled = true // 防止表单重复提交
-            if(!this.sysRole.id){
+        saveOrUpdate() {
+            //根据id判断
+            if (!this.sysRole.id) {//添加
                 this.save()
-            }else{
+            } else {//修改
                 this.update()
             }
         },
-        save(){
-            api.saveRole(this.sysRole).then(response =>{
-                this.$message.success(response.message || '操作成功')
-                this.dialogVisible = false
-                this.fetchData()
-            })
-        },
-        update(){
-            api.updateRole(this.sysRole).then(response => {
-                 this.$message.success(response.message || '操作成功')
-                 this.dialogVisible = false
-                 this.fetchData()
-            })
-        },
-         fetchDataById(id){
-            api.getRoleById(id).then(
-                response => this.sysRole = response.data
-            )
-         },
-         batchRemove(){
-              if (this.multipleSelection.length === 0) {
-                    this.$message.warning('请选择要删除的记录！')
-                    return
-                }
-                // debugger
-                this.$confirm('此操作将删除所选的记录, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    let idList = []
-                    //选择复选框的数据再数组中this.multipleSelection
-                    this.multipleSelection.forEach(item => {
-                        idList.push(item.id)
-                    });
-                    console.log("===========",idList)
-                    return api.batchRemove(idList)
-                }).then(response =>{
+        save() { //添加
+            api.saveRole(this.sysRole)
+                .then(response => {
+                    //提示
+                    this.$message.success(response.message || '操作成功')
+                    //关闭弹框
+                    this.dialogVisible = false
                     //刷新页面
                     this.fetchData()
-                    //提示信息
-                    this.$message.success(response.message || '删除成功')
-                })  
-         }
+                })
+        },
+        update() { //修改
+            api.updateById(this.sysRole)
+                .then(response => {
+                    //提示
+                    this.$message.success(response.message || '操作成功')
+                    //关闭弹框
+                    this.dialogVisible = false
+                    //刷新页面
+                    this.fetchData()
+                })
+        },
+        //条件分页查询
+        fetchData(current=1) {
+            this.page = current
+            api.getPageList(this.page,this.limit,this.searchObj)
+                .then(response => {
+                    this.list = response.data.records
+                    this.total = response.data.total
+                })
+        },
+        //删除
+        removeDataById(id) {
+            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                //调用
+                return api.removeById(id)
+            }).then(response => {
+                //刷新页面
+                this.fetchData()
+                //提示信息
+                 this.$message.success(response.message || '删除成功')
+            })
+        }
     }
-
 }
 </script>

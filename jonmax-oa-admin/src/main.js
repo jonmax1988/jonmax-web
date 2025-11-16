@@ -14,9 +14,16 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
 //新增
 import hasBtnPermission from '@/utils/btn-permission'
 Vue.prototype.$hasBP = hasBtnPermission
+
+import formCreate from '@form-create/element-ui'
+import FcDesigner from '@form-create/designer'
+Vue.use(formCreate)
+Vue.use(FcDesigner)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

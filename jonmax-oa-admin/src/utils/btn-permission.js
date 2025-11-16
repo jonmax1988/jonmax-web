@@ -2,7 +2,7 @@ import store from '@/store'
 
 /**
  * 判断当前用户是否有此按钮权限
- * 按钮权限字符串 permission 
+ * @param {按钮权限字符串} permission 
  */
 export default function hasBtnPermission(permission) {
   // 得到当前用户的所有按钮权限

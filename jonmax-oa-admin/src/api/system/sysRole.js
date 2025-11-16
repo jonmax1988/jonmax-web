@@ -20,13 +20,6 @@ export default {
             method: 'delete'
         })
     },
-    //findAll
-     findAll() {
-        return request({
-            url: `${api_name}/findAll`,
-            method: 'get'
-        })
-    },
     //角色添加
     saveRole(role) {
         return request({

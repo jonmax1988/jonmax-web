@@ -53,36 +53,27 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
-  }
+  },
 
-
-  //添加我们的路由
   // {
   //   path: '/system',
   //   component: Layout,
-  //   meta: {
-  //     title: '系统管理',
-  //     icon: 'el-icon-s-tools'
-  //   },
-  //   alwaysShow: true,
+  //   redirect: '/system/sysUser',
+  //   name: 'System',
+  //   meta: { title: '系统管理', icon: 'el-icon-s-help' },
   //   children: [
   //     {
   //       path: 'sysRole',
+  //       name: 'SysRole',
   //       component: () => import('@/views/system/sysRole/list'),
-  //       meta: {
-  //         title: '角色管理',
-  //         icon: 'el-icon-s-help'
-  //       },
+  //       meta: { title: '角色管理', icon: 'table' }
   //     },
   //     {
   //       path: 'sysUser',
+  //       name: 'SysUser',
   //       component: () => import('@/views/system/sysUser/list'),
-  //       meta: {
-  //         title: '用户管理',
-  //         icon: 'el-icon-s-help'
-  //       },
+  //       meta: { title: '用户管理', icon: 'tree' }
   //     },
-
   //     {
   //       name: 'sysMenu',
   //       path: 'sysMenu',
@@ -92,7 +83,6 @@ export const constantRoutes = [
   //         icon: 'el-icon-s-unfold'
   //       },
   //     },
-
   //     {
   //       path: 'assignAuth',
   //       component: () => import('@/views/system/sysRole/assignAuth'),
@@ -105,8 +95,7 @@ export const constantRoutes = [
   //   ]
   // },
 
-
-  // 404 page must be placed at the end !!!
+  // // 404 page must be placed at the end !!!
   // { path: '*', redirect: '/404', hidden: true }
 ]
 

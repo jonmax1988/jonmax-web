@@ -23,7 +23,7 @@ service.interceptors.response.use(response => {
     if (response.data.code == 208) {
       // debugger
       // 替换# 后台获取不到#后面的参数
-      let url = window.location.href.replace('#', 'guiguoa')
+      let url = window.location.href.replace('#', 'jonmax')
       window.location = 'http://ggkt2.vipgz1.91tunnel.com/admin/wechat/authorize?returnUrl=' + url
     } else {
       if (response.data.code == 200) {

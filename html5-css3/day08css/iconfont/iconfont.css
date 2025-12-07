@@ -1,0 +1,79 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 5082503 */
+  src: url('iconfont.woff2?t=1765017959588') format('woff2'),
+       url('iconfont.woff?t=1765017959588') format('woff'),
+       url('iconfont.ttf?t=1765017959588') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add-circle:before {
+  content: "\e664";
+}
+
+.icon-arrow-up-circle:before {
+  content: "\e665";
+}
+
+.icon-arrow-right-circle:before {
+  content: "\e666";
+}
+
+.icon-arrow-down:before {
+  content: "\e667";
+}
+
+.icon-arrow-right:before {
+  content: "\e668";
+}
+
+.icon-browse:before {
+  content: "\e669";
+}
+
+.icon-bottom:before {
+  content: "\e66a";
+}
+
+.icon-back:before {
+  content: "\e66b";
+}
+
+.icon-bad:before {
+  content: "\e66c";
+}
+
+.icon-arrow-double-left:before {
+  content: "\e66d";
+}
+
+.icon-arrow-left-circle:before {
+  content: "\e66e";
+}
+
+.icon-arrow-double-right:before {
+  content: "\e66f";
+}
+
+.icon-camera:before {
+  content: "\e670";
+}
+
+.icon-direction-left:before {
+  content: "\e671";
+}
+
+.icon-arrow-left-bold:before {
+  content: "\e685";
+}
+
+.icon-arrow-right-bold:before {
+  content: "\e687";
+}
+

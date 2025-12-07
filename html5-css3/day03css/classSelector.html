@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Selector</title>
+    <style>
+        /* 类选择器进行差异化 class .className */
+        div{
+            color: aqua;
+            font-size: 18px;
+        }
+
+        .red{
+            color: red;
+        }
+
+        .size{
+            font-size: 32px;
+        }
+        /* id 选择器也是进行差异化的设置，但一般情况下不作为CSS样式设置使用，一般配合javaScript
+            同一个id选择器在一个页面只能使用一次
+        */
+        #lee{
+             color: rgb(138, 106, 219);
+        }
+        /* 通配符 开发初期 清除样式 */
+        *{
+            color: rgb(223, 179, 18);
+        }
+    </style>
+</head>
+<body>
+   <div>This is a tag selector</div> 
+   <div class="red size">This is a class selector</div> 
+   <div id="lee">This is a id selector</div> 
+    <p>通用</p>
+    <strong>通用Strong</strong>
+</body>
+</html>

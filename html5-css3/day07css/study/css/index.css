@@ -1,0 +1,430 @@
+/* 首页样式 */
+
+/* 版心样式 */
+.wrapper {
+    margin: 0 auto;
+    width: 1200px;
+}
+
+body {
+    background-color: #f3f5f7;
+}
+
+/* 头部样式 */
+.header {
+    height: 100px;
+    background-color: white;
+}
+
+.header .wrapper {
+    padding-top: 30px;
+    display: flex;
+}
+
+/* logo */
+.logo a {
+    display: block;
+    width: 195px;
+    height: 41px;
+    background-image: url("../images/logo.png");
+    font-size: 0px;
+}
+
+/* 导航 */
+.nav {
+    margin-left: 102px;
+}
+
+.nav ul {
+    display: flex;
+}
+
+.nav li {
+    margin-right: 24;
+}
+
+.nav li a {
+    display: block;
+    padding: 6px 8px;
+    line-height: 27px;
+}
+
+/* active 类选择器，默认选择a */
+/* 并集选择器 */
+.nav li .active,
+.nav li a:hover {
+    border-bottom: 2px solid #00a4ff;
+}
+
+/* 搜索区域 */
+.search {
+    display: flex;
+    margin-left: 116px;
+    padding-left: 5px;
+    width: 412px;
+    height: 40px;
+    background-color: #f3f5f7;
+    border: solid 1px #00a4ff;
+    border-radius: 0px;
+}
+
+/* 搜索区域input输入框 */
+.search input {
+    flex: 1;
+    border: 0;
+    background-color: transparent;
+    /* 去掉焦点块 */
+    outline: none;
+}
+
+/* 设置选中文字的颜色样式 */
+.search input::placeholder {
+    font-size: 14px;
+    color: #999;
+}
+
+/* 父级已经flex 布局，子级变成了弹性盒子，加宽高生效 */
+.search a {
+    /* 侧轴居中 */
+    align-self: center;
+    width: 51px;
+    height: 40px;
+    background-image: url(../images/fa-search.png);
+}
+
+/* 用户 */
+.user {
+    margin-left: 100px;
+    margin-top: 4px;
+}
+
+/* 垂直居中 */
+.user img {
+    margin-right: 7px;
+    vertical-align: middle;
+}
+
+.user span {
+    font-size: 16px;
+    color: #00a4ff;
+}
+
+/* banner区域 */
+.banner {
+    height: 420px;
+    background-color: #1c036c;
+}
+
+/* banner区域 版心 */
+.banner .wrapper {
+    display: flex;
+    justify-content: space-between;
+    height: 420px;
+    background-image: url(../images/banner2.png);
+}
+
+/* banner区域 版心 测导航栏 */
+
+.banner .left {
+    padding: 3px 20px;
+    width: 190px;
+    height: 420px;
+    background-color: #1d1b1b;
+    opacity: 0.6;
+}
+
+.banner .left a {
+    /* 块级的宽度是父级的100% */
+    display: block;
+    height: 46px;
+    line-height: 46px;
+    font-size: 16px;
+    color: white;
+    background: url(../images/white.png) no-repeat right center;
+    background-size: 6px 10px;
+}
+
+/* 鼠标悬停 #00b4ff */
+.banner .left a:hover {
+    color: #00b4ff;
+    background: url(../images/blue.png) no-repeat right center;
+    background-size: 6px 10px;
+}
+
+/* 课程表 右侧  */
+.banner .right {
+    margin-top: 50px;
+    width: 228px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #213fad;
+}
+
+.banner .right h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 48px;
+    text-align: center;
+    /* 添加此行实现文字水平居中 */
+}
+
+.banner .right .content {
+    padding: 14px;
+    width: 228px;
+    height: 252px;
+    background-color: #fff;
+}
+
+.banner .right dl {
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.banner .right dt {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+}
+
+.banner .right dd {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.banner .right dl:nth-child(3) {
+    margin-bottom: 8px;
+}
+
+.banner .right dd span {
+    color: #00a4ff;
+}
+
+.banner .right dd strong {
+    color: #444545;
+    font-weight: 400;
+}
+
+.banner .right .content a {
+    display: block;
+    height: 41px;
+    line-height: 41px;
+    background-color: #00a4ff;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+
+}
+
+.recomment {
+    display: flex;
+    margin-top: 11px;
+    padding: 0 20px;
+    height: 60px;
+    background-color: #fff;
+    box-shadow: 0px 2px 3px 0px rgba(118, 118, 118, 0.2);
+    line-height: 60px;
+}
+
+.recomment h3 {
+    font-size: 18px;
+    color: #00a4ff;
+    font-weight: 400;
+}
+
+.recomment ul {
+    /* 去除标题和修改兴趣的尺寸，父级剩余尺寸都给ul，实现把标题和修改兴趣都挤到左右侧 */
+    flex: 1;
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.recomment ul li a {
+    padding: 0 24px;
+    border-right: 1px solid #e0e0e0;
+    font-size: 18px;
+}
+
+.recomment ul li:last-child a {
+    border-right: 0;
+}
+
+.recomment .modify {
+    font-size: 16px;
+    color: #00a4ff;
+}
+
+.course {
+    margin-top: 15px;
+}
+
+.hd {
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    line-height: 60px;
+
+}
+
+.hd h3 {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.hd .more {
+    background: url(../images/show.svg) no-repeat right center;
+    /* background-size: 6px 10px; */
+    padding-right: 20px;
+    font-size: 14px;
+    color: #999;
+}
+
+/* 课程内容 公共类 */
+.bd ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.bd li {
+    margin-bottom: 14px;
+    width: 233px;
+    height: 271px;
+    background-color: #00a4ff;
+    /* border-radius: 10px; */
+}
+
+.bd li .pic {
+    height: 156px;
+    /* background:url(../images/VUE.svg); */
+}
+
+.bd li .text {
+    padding: 20px;
+    height: 115px;
+    background-color: #fff;
+}
+
+.bd li .text h4 {
+    margin-bottom: 20px;
+    height: 32px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+
+.bd li .text p {
+    font-size: 14px;
+    line-height: 20px;
+    color: #999;
+}
+
+.bd li .text p span {
+    color: #ff7c2d;
+}
+
+.bd li .text p i {
+    font-style: normal;
+}
+
+/* 前端区域 */
+.hd ul {
+    display: flex;
+}
+
+.hd li {
+    margin-right: 60px;
+    font-size: 16px;
+}
+
+.hd li .active {
+    color: #00a4ff;
+}
+
+.bd {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bd .left{
+    width: 228px;
+}
+
+.bd .left img{
+    max-width: 100%; /* 图片最大宽度不超过容器 */
+    height: auto;   /* 高度自动，保持比例 */
+    display: block; /* 避免底部间隙问题 */ 
+}
+.bd .right {
+    width: 957px;
+}
+
+.bd .right img {
+    margin-bottom: 15px;
+    height: 100px;
+    max-width: 100%;
+    height: auto;   /* 高度自动，保持比例 */
+    display: block; /* 避免底部间隙问题 */ 
+}
+
+.footer {
+    margin-top: 60px;
+    padding-top: 60px;
+    height: 273px;
+    background-color: #fff;
+}
+
+.footer .wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer .left {
+    width: 440px;
+}
+
+.footer .left p {
+    margin-top: 24px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    line-height: 17px;
+    color: #666;
+
+}
+
+.footer .left .download {
+    display: block;
+    text-align: center;
+    width: 120px;
+    height: 36px;
+    line-height: 34px;
+    border: solid 1px #00a4ff;
+    font-family: MicrosoftYaHei;
+	font-size: 16px;
+    color: #00a4ff;
+}
+
+.footer .right {
+    display: flex;
+}
+
+.footer .right dl {
+    margin-left: 130px;
+}
+
+.footer .right dt {
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.footer .right a {
+    font-size: 14px;
+    color: #666;
+    line-height: 24px;
+}

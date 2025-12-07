@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>car</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .father {
+            display: flex;
+            margin: 100px auto;
+            width: 1026px;
+            height: 450px;
+            background-image: url(./car33.png);
+
+
+            overflow: hidden;
+        }
+
+        .son-left,
+        .son-right {
+            width: 50%;
+            height: 450px;
+            background-image: url(./carson.png);
+
+            transition: all 1s;
+        }
+
+        .son-right {
+            background-position: right 0;
+        }
+
+        .father:hover .son-left {
+            transform: translate(-100%);
+        }
+
+        .father:hover .son-right {
+            transform: translateX(100%);
+        }
+
+        .rotate-1 {
+            margin: 100px auto;
+            width: 255px;
+            height: 255px;
+            background-image: url(./rotate.png);
+
+            transition: all 10s;
+        }
+
+        .rotate-1:hover {
+            transform: rotate(3600deg);
+        }
+
+        .car {
+            margin: 10px auto;
+            width: 1026px;
+            height: 292px;
+            border: 1px solid black;
+
+
+        }
+
+        .car .car-b {
+            width: 290px;
+            height: 290px;
+            background: url(./car-b.png) no-repeat;
+
+            transition: all 2s;
+        }
+
+        .car:hover .car-b {
+            transform: translate(734px) rotate(360deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="father">
+        <div class="son-left"></div>
+        <div class="son-right"></div>
+    </div>
+
+    <div class="rotate-1"></div>
+
+    <div class="car">
+        <div class="car-b"></div>
+    </div>
+</body>
+
+</html>

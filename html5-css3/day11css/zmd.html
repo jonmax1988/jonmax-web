@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>走马灯</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        img {
+            display: block;
+            width: 233;
+        }
+
+        .box {
+            margin: 100px auto;
+            width: 699px;
+            height: 155;
+            border: 5px solid orange;
+            overflow: hidden;
+        }
+
+        .box ul {
+            display: flex;
+            animation: move 10s infinite linear;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(0px);
+            }
+
+            100% {
+                transform: translate(-1165px);
+            }
+        }
+
+        .box:hover ul {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <ul>
+            <li><img src="./zmd/CSS.svg" alt=""></li>
+            <li><img src="./zmd/JAVA.svg" alt=""></li>
+            <li><img src="./zmd/VUE.svg" alt=""></li>
+            <li><img src="./zmd/JonMax.svg" alt=""></li>
+            <li><img src="./zmd/JavaScript.svg" alt=""></li>
+            <!-- 重复播放 -->
+             <li><img src="./zmd/CSS.svg" alt=""></li>
+            <li><img src="./zmd/JAVA.svg" alt=""></li>
+            <li><img src="./zmd/VUE.svg" alt=""></li>
+        </ul>
+    </div>
+</body>
+
+</html>

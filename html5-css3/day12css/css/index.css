@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style: none;
+}
+
+.toolbar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: skyblue;
+}
+
+.toolbar ul {
+    display: flex;
+}
+
+.toolbar li {
+    height: 50px;
+    width: 25%;
+    text-align: center;
+}
+
+.toolbar img {
+    height: 50px;
+}

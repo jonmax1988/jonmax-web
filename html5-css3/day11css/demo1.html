@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间转换</title>
+    <style>
+        .wrapper {
+            margin: 100px auto;
+        }
+
+        .father {
+            perspective: 1000px;
+        }
+
+        .son {
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+            transition: all 2s;
+        }
+
+        .son:hover {
+            /* 默认状态下无法观察Z轴的平移效果 3d必须设置三个值x,y,z */
+            transform: translate3d(100px, 200px, -500px);
+        }
+
+        .box {
+            width: 220px;
+            perspective: 1000px;
+        }
+
+        img {
+            width: 220px;
+            transition: all 1s;
+        }
+
+        .box img:hover {
+            /* transform: rotateZ(360deg); */
+            /* transform: rotateX(60deg); */
+            /* transform: rotateX(-60deg); */
+            transform: rotateY(-60deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="father">
+        <div class="son wrapper"></div>
+    </div>
+
+    <div class="box wrapper">
+        <img src="./image.png" alt="">
+    </div>
+</body>
+
+</html>

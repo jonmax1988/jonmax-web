@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New User Regist</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: whitesmoke;
+    }
+
+    .regist {}
+
+    .regist>.content {
+      width: 1440px;
+      height: 900px;
+      background-color: white;
+      position: relative;
+    }
+
+    h1 {
+      padding: 10px;
+      color: #767676;
+      font-size: 30px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .regist>.content>div {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .regist>.content form {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 500px;
+      width: 300px;
+    }
+
+    .regist>.content form>* {
+      box-sizing: border-box;
+      height: 50px;
+    }
+
+    .regist>.content form>div {
+      width: 100%;
+      position: relative;
+    }
+
+    .regist>.content form>div.agreement {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .regist>.content form>div>input:not([type="checkbox"]) {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #dbdbdb;
+      padding: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    .regist>.content form>div:not(.agreement)>span {
+      position: absolute;
+      left: 105%;
+      top: 50%;
+      transform: translateY(-50%);
+      text-wrap: nowrap;
+    }
+
+    .regist>.content form>div:not(.agreement)>a {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      text-wrap: nowrap;
+      text-decoration: none;
+      color: #49ba9b;
+    }
+
+    .right {
+      color: #49ba9b;
+    }
+
+    .wrong {
+      color: red;
+    }
+
+    .regist>.content form>button {
+      width: 100%;
+      font-size: 20px;
+      background-color: #49ba9b;
+      border-style: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .regist>.content form>div.agreement i {
+      color: #49ba9b;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="regist">
+    <div class="content">
+      <h1>新用户注册</h1>
+      <div class="form">
+        <form action="">
+          <div>
+            <input type="text" name="uname" id="uname" placeholder="请输入用户名" required />
+            <span></span>
+          </div>
+          <div>
+            <input type="text" name="uphone" id="uphone" placeholder="请输入手机号" required />
+            <span></span>
+          </div>
+          <div>
+            <input type="text" name="umsg" id="umsg" placeholder="短信验证码" required />
+            <span></span>
+            <a href="#">发送验证码</a>
+          </div>
+          <div>
+            <input type="password" name="upwd" id="upwd" placeholder="设置6~20位字母数字和下划线" required />
+            <span></span>
+          </div>
+          <div>
+            <input type="password" id="upwd_repeat" placeholder="请再次输入密码" required />
+            <span></span>
+          </div>
+          <div class="agreement">
+            <div>
+              <input type="checkbox" name="agreement" id="agreement" required />
+              已阅读并同意
+              <i>《用户服务协议》</i>
+            </div>
+          </div>
+          <button type="submit">注册</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    //获取表单的元素 
+    const fm = document.querySelector('.regist form')
+    // 校验结果的数组
+    let arrRlt = [];
+    const sendMes = document.querySelector('.content form a')
+    let flag = true
+    sendMes.addEventListener('click', function (e) {
+      e.preventDefault()
+      console.log('开始发送短信验证码======================');
+      if (flag) {
+        flag = false
+        console.log("验证码已发送!");
+        let i = 5
+        sendMes.innerHTML = `${i}秒后可重发`
+        let timerId = setInterval(function () {
+          i--
+          sendMes.innerHTML = `${i}秒后可重发`
+          if (i === 0) {
+            clearInterval(timerId)
+            sendMes.innerHTML = '发送短信验证码'
+            flag = true
+          }
+        }, 1000)
+      }
+    })
+
+    //封装一个校验函数
+    function verify(type = 0, str = "") {
+      let reg = ''
+      let result = false
+      switch (type) {
+        case 0:
+          reg = /^[a-zA-Z][a-zA-Z0-9-_]{5,9}$/; // 用户名验证
+          break;
+        case 1:
+          reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9]|)\d{8}$/; // 手机号验证
+          break;
+        case 2:
+          reg = /^[0-9]{6}$/; // 短信验证码
+          break;
+        case 3:
+          reg = /^[\S]{6,20}$/; // 密码验证
+          break;
+        default:
+      }
+      console.log(str);
+      console.log(reg);
+      result = reg.test(str);
+      console.log(result);
+      return result;
+    }
+
+    //验证用户名名称
+    const ipt_uname = document.querySelector('[name=uname]')
+    //提示信息 span标签，下一个兄弟元素
+    const regUserMsg = ipt_uname.nextElementSibling
+    ipt_uname.addEventListener('change', function (e) {
+      e.preventDefault()
+      const uname = this.value;
+      let type = 0;
+      let rlt = verify(type, uname);
+      arrRlt[type] = rlt;
+      if (rlt) {
+        regUserMsg.innerHTML = '√'
+        regUserMsg.className = 'right'
+        // msg.classList.add('right')
+      } else {
+        regUserMsg.innerHTML = '昵称长度为6到10个字符,且以字母开头'
+        // msg.classList.add('wrong')
+        regUserMsg.className = 'wrong'
+      }
+    })
+
+    // 验证手机号
+    const ipt_uphone = document.querySelector('#uphone')
+    const regPhoneMsg = ipt_uphone.nextElementSibling
+    ipt_uphone.addEventListener('change', function (e) {
+      e.preventDefault()
+      const phone = this.value
+      let type = 1
+      let rlt = verify(type, phone)
+      arrRlt[type] = rlt
+      if (rlt) {
+        regPhoneMsg.innerHTML = '√'
+        regPhoneMsg.className = 'right'
+      } else {
+        regPhoneMsg.innerHTML = '手机号格式不正确'
+        regPhoneMsg.className = 'wrong'
+      }
+    })
+
+    //验证短信验证码
+    const ipt_umsg = fm.querySelector("#umsg");
+    const span_umsg = ipt_umsg.nextElementSibling;
+    ipt_umsg.addEventListener('change', function (e) {
+      e.preventDefault();
+      const umsg = this.value;
+      console.log(umsg);
+      let type = 2;
+      let rlt = verify(type, umsg);
+      arrRlt[type] = rlt;
+      if (rlt) {
+        span_umsg.innerHTML = "✔";
+        span_umsg.className = "right";
+      } else {
+        span_umsg.innerHTML = "请输入正确的验证码";
+        span_umsg.className = "wrong";
+      }
+    })
+
+    //验证密码
+    const ipt_upwd = fm.querySelector("#upwd");
+    const span_upwd = ipt_upwd.nextElementSibling;
+    ipt_upwd.addEventListener('change', function (e) {
+      e.preventDefault();
+      const upwd = this.value;
+      let type = 3;
+      let rlt = verify(type, upwd);
+      arrRlt[type] = rlt;
+      if (rlt) {
+        span_upwd.innerHTML = "✔";
+        span_upwd.className = "right";
+      } else {
+        span_upwd.innerHTML = "设置6到20位字母、数字和符号组合";
+        span_upwd.className = "wrong";
+      }
+    })
+
+    //再次验证密码
+    const ipt_upwd_r = fm.querySelector('#upwd_repeat')
+    const span_upwd_r = ipt_upwd_r.nextElementSibling
+    ipt_upwd_r.addEventListener('change', function (e) {
+      e.preventDefault()
+      const upwd_repeat = this.value;
+      const upwd = ipt_upwd.value;
+      let rlt = upwd_repeat === upwd;
+      let type = 4;
+      arrRlt[type] = rlt;
+      if (rlt) {
+        span_upwd_r.innerHTML = "✔";
+        span_upwd_r.className = "right";
+      } else {
+        span_upwd_r.innerHTML = "两次输入密码不一致";
+        span_upwd_r.className = "wrong";
+      }
+    })
+
+    //注册
+    fm.addEventListener("submit", function (e) {
+      console.log(arrRlt);
+      let rlt;
+      for (let i = 0; i < arrRlt.length; i++) {
+        rlt = arrRlt[i];
+        if (!rlt) {
+          console.log("注册失败");
+          e.preventDefault();
+          break;
+        }
+      }
+      if (rlt) {
+        console.log("注册成功");
+        location.href = "https://www.baidu.com";
+      }
+    });
+  </script>
+</body>
+
+</html>

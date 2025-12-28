@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>年会抽奖</title>
+  <style>
+    .wrapper {
+      margin: 20px auto;
+      width: 840px;
+      height: 420px;
+      background: url(./images/taobao2.gif) no-repeat center / cover;
+      padding: 100px 250px;
+      box-sizing: border-box;
+      color: rgb(252, 4, 4);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <strong>JonMax年会抽奖</strong>
+    <h1>一等奖：<span id="one"></span></h1>
+    <h3>二等奖：<span id="two"></span></h3>
+    <h5>三等奖：<span id="three"></span></h5>
+  </div>
+  <script>
+    const userArr = ['jon', 'max', 'lee', 'red', 'pink', 'blue']
+
+    let random1 = Math.floor(Math.random() * userArr.length)
+    console.log(random1)
+    console.log(userArr[random1])
+    const one = document.querySelector('#one')
+    one.innerHTML = userArr[random1]
+    userArr.splice(random1, 1)
+    console.log(userArr);
+
+    let random2 = Math.floor(Math.random() * userArr.length)
+    console.log(random2)
+    console.log(userArr[random2])
+    const two = document.querySelector('#two')
+    two.innerHTML = userArr[random2]
+    userArr.splice(random2, 1)
+    console.log(userArr);
+
+    let random3 = Math.floor(Math.random() * userArr.length)
+    console.log(random3)
+    console.log(userArr[random3])
+    const three = document.querySelector('#three')
+    three.innerHTML = userArr[random3]
+    userArr.splice(random3, 1)
+    console.log(userArr);
+
+
+  </script>
+</body>
+
+</html>

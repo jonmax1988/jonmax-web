@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方案三：右下角悬浮按钮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ebf8ff 0%, #d6e8ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 90vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+        }
+        
+        .content {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            margin-left: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            color: #2c5282;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        /* 悬浮按钮样式 */
+        .fab-container {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000;
+        }
+        
+        .fab-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3182ce 0%, #63b3ed 100%);
+            color: white;
+            border: none;
+            font-size: 28px;
+            box-shadow: 
+                0 6px 20px rgba(49, 130, 206, 0.5),
+                0 0 0 4px rgba(49, 130, 206, 0.1);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .fab-button:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 
+                0 10px 30px rgba(49, 130, 206, 0.7),
+                0 0 0 8px rgba(49, 130, 206, 0.15);
+        }
+        
+        .fab-button:active {
+            transform: scale(0.95) rotate(90deg);
+        }
+        
+        /* 浮动菜单项 */
+        .fab-menu {
+            position: absolute;
+            bottom: 85px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .fab-container.active .fab-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .fab-menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            color: #2d3748;
+            font-weight: 500;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .fab-menu-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: #f7fafc;
+        }
+        
+        .fab-menu-item i {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .fab-menu-item:nth-child(1) i {
+            background: linear-gradient(135deg, #38b2ac 0%, #81e6d9 100%);
+        }
+        
+        .fab-menu-item:nth-child(2) i {
+            background: linear-gradient(135deg, #ed8936 0%, #fbd38d 100%);
+        }
+        
+        .fab-menu-item:nth-child(3) i {
+            background: linear-gradient(135deg, #805ad5 0%, #d6bcfa 100%);
+        }
+        
+        .fab-menu-item-text {
+            font-size: 14px;
+        }
+        
+        /* 波纹效果 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* 示例卡片 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card h3 {
+            color: #2c5282;
+            margin-bottom: 10px;
+        }
+        
+        .card p {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .content {
+                margin-left: 0;
+            }
+            
+            .fab-container {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>项目列表</h1>
+            <p>左侧导航区域，可列出项目分类或筛选条件。</p>
+        </div>
+        
+        <div class="content">
+            <h1>项目仪表板</h1>
+            <p>右下角悬浮按钮采用Material Design风格，点击后展开更多操作选项。</p>
+            <p>按钮具有旋转动画和波纹效果，视觉体验出色。</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>项目A</h3>
+                    <p>这是一个示例项目卡片，展示项目的基本信息。</p>
+                </div>
+                <div class="card">
+                    <h3>项目B</h3>
+                    <p>这是另一个示例项目卡片，展示项目的基本信息。</p>
+                </div>
+                <div class="card">
+                    <h3>项目C</h3>
+                    <p>这是第三个示例项目卡片，展示项目的基本信息。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-menu">
+            <div class="fab-menu-item" id="newFolder">
+                <span class="fab-menu-item-text">新建文件夹</span>
+                <i class="fas fa-folder-plus"></i>
+            </div>
+            <div class="fab-menu-item" id="newFile">
+                <span class="fab-menu-item-text">新建文件</span>
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="fab-menu-item" id="uploadFile">
+                <span class="fab-menu-item-text">上传文件</span>
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+        </div>
+        
+        <button class="fab-button" id="fabButton">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <script>
+        const fabContainer = document.getElementById('fabContainer');
+        const fabButton = document.getElementById('fabButton');
+        
+        // 主按钮点击事件
+        fabButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fabContainer.classList.toggle('active');
+            
+            // 添加波纹效果
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+        
+        // 菜单项点击事件
+        document.getElementById('newFolder').addEventListener('click', function() {
+            alert('执行新建文件夹操作');
+            fabContainer.classList.remove('active');
+        });
+        
+        document.getElementById('newFile').addEventListener('click', function() {
+            alert('执行新建文件操作');
+            fabContainer.classList.remove('active');
+        });
+        
+        document.getElementById('uploadFile').addEventListener('click', function() {
+            alert('执行上传文件操作');
+            fabContainer.classList.remove('active');
+        });
+        
+        // 点击页面其他区域关闭菜单
+        document.addEventListener('click', function(e) {
+            if (!fabContainer.contains(e.target)) {
+                fabContainer.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

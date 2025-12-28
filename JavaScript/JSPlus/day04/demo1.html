@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const obj = {
+      uname: 'jon',
+      age: 18,
+      hobby: ['篮球', '羽毛球'],
+      family: {
+        bagy: '小 jon'
+      }
+    }
+    const o = {}
+    function deepCopy(target, source) {
+      for (let key in source) {
+        if (source.hasOwnProperty(key)) {
+          // 如果是对象或数组，递归拷贝
+          if (typeof source[key] === 'object' && source[key] !== null) {
+            target[key] = Array.isArray(source[key]) ? [] : {};
+            deepCopy(target[key], source[key]);
+          } else {
+            // 基本类型直接复制
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    }
+
+
+    deepCopy(o, obj);
+    console.log('第一次copy的o=========== 2', JSON.stringify(o));
+    // console.log('第一次copy的o=========== 2', o);
+    // 这是浏览器控制台的 **“惰性求值” 特性 ** 导致的视觉 “误导”~执行console.log('第一次copy的o...', o)时，
+    // o.hobby的实际值是['篮球', '羽毛球']，但控制台只记录了o的引用，没立即渲染数组内容；
+    // 之后执行o.hobby[0] = '嘟嘟嘟'，修改了o.hobby的实际值；
+    // 当你在控制台展开第一个日志的o时，控制台会读取o.hobby的当前最新值（已经被改成['嘟嘟嘟', '羽毛球']了），所以看起来第一个日志的hobby和第二个一样。
+    // 验证方法：
+    // 如果想看到打印时刻的真实值，可以用JSON.stringify序列化后打印（序列化会立即获取当时的值）：
+
+
+    o.hobby[0] = '嘟嘟嘟';
+
+    console.log('o.hobby[0]的o=========== 3', o);
+
+    // console.log('修改o的hobby后的o=========== 3', o);
+    // console.log('修改copy后的o,再观察原始对象变化obj=========== 4', obj);
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [1, 2, 3]
+    Array.prototype.max = function () {
+      //展开函数 数组展开 
+      return Math.max(...this)
+    }
+
+    Array.prototype.sum = function () {
+      return this.reduce((prev, item) => prev + item, 0)
+    }
+    console.log(arr.max());
+    console.log(arr.sum());
+    
+
+  </script>
+</body>
+
+</html>

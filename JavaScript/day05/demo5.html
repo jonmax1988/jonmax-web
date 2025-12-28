@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    function getRandom(N, M) {
+      return Math.floor(Math.random() * (M - N + 1)) + N
+    }
+    let random = getRandom(1, 10)
+    console.log(random)
+
+    let flag = true
+
+    for (let i = 1; i <= 3; i++) {
+      let num = +prompt('请输入你猜的数字')
+      if (num < random) {
+        alert('您猜小了，请继续')
+      } else if (num > random) {
+        alert('您猜大了，请继续')
+      } else {
+        flag = false
+        alert('恭喜您，猜对了')
+        break
+      }
+    }
+    if (flag) {
+      alert('Sorry 您的次数用完了！')
+    }
+
+  </script>
+</body>
+
+</html>

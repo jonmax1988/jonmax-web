@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .wrapper {
+      margin: 10px auto;
+      max-width: 1200px;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* 表格居中 */
+    table {
+      margin: 0px auto;
+      border-collapse: collapse;
+      min-width: 800px;
+      text-align: center;
+      /* 给表格一个最小宽度 */
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="product-info wrapper">
+    <h2>订单商品信息</h2>
+  </div>
+  <script>
+    let productName
+    let productPrice
+    let num
+    let totalPrice
+    let addr
+
+    productName = prompt('请输入商品名称：')
+    productPrice = +prompt('请输入商品价格：')
+    num = +prompt('请输入商品数量：')
+    addr = prompt('请输入：收获地址')
+
+    totalPrice = productPrice * num
+    document.write(
+      `<table>
+        <tr>
+          <th id="name">商品名称</th>
+          <th id="price">商品价格</th>
+          <th id="num">商品数量</th>
+          <th id="tPrice">总价</th>
+          <th id="addr">收获地址</th>
+        </tr>
+        <tr>
+          <td>${productName}</td>
+          <td>${productPrice}元</td>
+          <td>${num}</td>
+          <td>${totalPrice}元</td>
+          <td>${addr}</td>
+        </tr>
+    </table>`
+    )
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+
+// banner 
+.carousel {
+    // 如果视口<768, 图250 max-width
+    // 如果视口<992, 图400 max-width
+    // 如果视口>992, 图500 min-width
+
+    img {
+        height: 100%!important;
+    }
+    @media (max-width:992px) {
+        .item {
+            height: 400px;
+        }
+    }
+    @media (max-width:768px) {
+        .item {
+            height: 250px;
+        }
+    }
+    @media (min-width:992px) {
+        .item {
+            height: 500px;
+        }
+    }
+
+}
+
+// 导航条
+.navbar-default {
+    background-color: transparent;
+    border: 0!important;
+    .navbar-brand {
+        color: #fff;
+    }
+    .navbar-nav>li>a {
+        color: #fff;
+    }
+}
+
+.project {
+    padding-top: 60px;
+    text-align: center;
+    h1 {
+        color: #494d55;
+       
+    }
+    
+    p {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #919191;
+    }
+    .container {
+        div {
+            a {
+                display: block;
+                height: 200px;                
+            }           
+           
+        }
+        div:nth-child(1) a {
+            background-color: #77c6f4;
+        }
+        div:nth-child(2) a {
+            background-color: #e65a7e;
+        }
+        div:nth-child(3) a {
+            background-color: #7e8d9d;
+        }
+        div:nth-child(4) a {
+            background-color:  #8adf51;
+        }
+       
+    }
+}

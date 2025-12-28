@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    div {
+      margin: 100px auto;
+      padding: 10px;
+      width: 200px;
+      height: 200px;
+      background-color: skyblue;
+      font-size: 30px;
+      font-weight: 700;
+      color: red;
+
+      /* 关键：grid布局实现居中 */
+      display: grid;
+      place-items: center;
+      /* 同时实现水平+垂直居中 */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="first"></div>
+  <div class="second"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+
+    const divF = document.querySelector('.first')
+    let i = 0
+    function move() {
+      divF.innerHTML = i++
+      // 频繁促发 耗性能 lodash 防抖  ; 手写防抖
+    }
+    divF.addEventListener('mousemove', _.throttle(move, 1000))
+
+
+
+
+    function throttle(fn, t) {
+      let tId = null
+      return function () {
+        if (!tId) {
+          tId = setTimeout(function () {
+            fn()
+            tId = null
+          }, t)
+        }
+
+      }
+    }
+
+
+    let j = 0
+    function moveJ() {
+      divS.innerHTML = j++
+      // 频繁促发 耗性能 lodash 防抖  ; 手写防抖
+    }
+    const divS = document.querySelector('.second')
+    divS.addEventListener('mousemove', throttle(moveJ, 500))
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方案二：顶部通栏 + 水晶按钮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(135, 206, 235, 0.2);
+            padding: 25px 0;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+        }
+        
+        .breadcrumb {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .content-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+            min-height: 300px;
+        }
+        
+        h1 {
+            color: #2c5282;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        /* 水晶按钮样式 */
+        .glass-button {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(135, 206, 235, 0.4);
+            border-radius: 16px;
+            padding: 16px 28px;
+            font-size: 16px;
+            color: #2c5282;
+            font-weight: 600;
+            box-shadow: 
+                0 4px 20px rgba(66, 153, 225, 0.2),
+                inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: 0.5s;
+        }
+        
+        .glass-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 30px rgba(66, 153, 225, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.8);
+            border-color: rgba(66, 153, 225, 0.6);
+        }
+        
+        .glass-button:hover:before {
+            left: 100%;
+        }
+        
+        .glass-button i {
+            font-size: 20px;
+            background: linear-gradient(135deg, #3182ce 0%, #63b3ed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+        
+        .glass-button:hover i {
+            transform: rotate(90deg) scale(1.1);
+        }
+        
+        /* 按钮容器样式 */
+        .button-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .secondary-btn {
+            padding: 12px 20px;
+            background: rgba(226, 232, 240, 0.6);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 12px;
+            color: #4a5568;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(203, 213, 224, 0.8);
+        }
+        
+        /* 菜单项样式 */
+        .menu-item {
+            padding: 15px 25px;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .menu-item:hover {
+            background: rgba(66, 153, 225, 0.1);
+            border-left: 3px solid #4299e1;
+            color: #2c5282;
+        }
+        
+        .menu-item.active {
+            background: rgba(66, 153, 225, 0.15);
+            border-left: 3px solid #3182ce;
+            color: #2c5282;
+            font-weight: 600;
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(135, 206, 235, 0.2);
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .button-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="menu-item active">
+                <i class="fas fa-home"></i>仪表板
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-chart-bar"></i>数据分析
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-users"></i>用户管理
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-cog"></i>系统设置
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="breadcrumb">
+                    <span>仪表板</span> / <span>项目管理</span>
+                </div>
+                
+                <div class="button-container">
+                    <button class="secondary-btn" id="filterBtn">
+                        <i class="fas fa-filter"></i> 筛选
+                    </button>
+                    <button class="secondary-btn" id="exportBtn">
+                        <i class="fas fa-download"></i> 导出
+                    </button>
+                    <button class="glass-button" id="addBtn">
+                        <i class="fas fa-plus-circle"></i> 新建项目
+                    </button>
+                </div>
+                
+                <div class="user-info">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #3182ce 0%, #63b3ed 100%);"></div>
+                    <span>管理员</span>
+                </div>
+            </div>
+            
+            <div class="content-wrapper">
+                <h1>项目概览</h1>
+                <p>这是一个左右布局的界面示例，顶部通栏包含导航和操作按钮。</p>
+                <p>水晶质感的新建按钮采用了玻璃态设计，具有透明背景、模糊效果和优雅的边框，在天空蓝的主题下显得格外突出。</p>
+                <p>点击"新建项目"按钮可触发相应的操作。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addBtn').addEventListener('click', function() {
+            alert('执行新建项目操作');
+        });
+        
+        document.getElementById('filterBtn').addEventListener('click', function() {
+            alert('打开筛选面板');
+        });
+        
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            alert('执行导出操作');
+        });
+        
+        // 菜单点击效果
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

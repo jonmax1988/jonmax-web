@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方案五：内容区顶部中央突出按钮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: white;
+            padding: 30px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        /* 顶部操作栏 */
+        .content-top-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .page-title h1 {
+            color: #1e3a8a;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .page-title p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        /* 中央突出按钮 */
+        .central-add-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 6px 20px rgba(59, 130, 246, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .central-add-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: 0.5s;
+        }
+        
+        .central-add-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 30px rgba(59, 130, 246, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        }
+        
+        .central-add-button:hover:before {
+            left: 100%;
+        }
+        
+        .central-add-button i {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .central-add-button:hover i {
+            transform: rotate(90deg) scale(1.1);
+        }
+        
+        .button-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* 辅助按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .secondary-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            color: #4b5563;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .secondary-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        /* 内容区域 */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .main-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .side-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        /* 表格样式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th {
+            background: #f8fafc;
+            padding: 12px 15px;
+            text-align: left;
+            color: #4b5563;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .data-table tr:hover {
+            background: #f9fafb;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        /* 侧边栏菜单 */
+        .menu-item {
+            padding: 15px 20px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .menu-item:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        .menu-item.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left: 3px solid #3b82f6;
+            font-weight: 600;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 20px 0;
+            }
+            
+            .content-top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .central-add-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div style="padding: 0 20px 30px;">
+                <div style="font-size: 22px; font-weight: 700; color: #1e3a8a; margin-bottom: 5px;">管理系统</div>
+                <div style="font-size: 12px; color: #6b7280;">专业业务管理平台</div>
+            </div>
+            
+            <div class="menu-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>仪表板</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-project-diagram"></i>
+                <span>项目管理</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>团队管理</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>数据分析</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="content-top-bar">
+                <div class="page-title">
+                    <h1>项目管理</h1>
+                    <p>管理您的项目、任务和团队成员</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="secondary-btn" id="filterBtn">
+                        <i class="fas fa-filter"></i> 筛选
+                    </button>
+                    <button class="secondary-btn" id="exportBtn">
+                        <i class="fas fa-download"></i> 导出
+                    </button>
+                    <button class="central-add-button" id="addButton">
+                        <span class="button-badge">NEW</span>
+                        <i class="fas fa-plus"></i>
+                        新建项目
+                    </button>
+                </div>
+            </div>
+            
+            <div class="content-wrapper">
+                <div class="main-panel">
+                    <h2>项目列表</h2>
+                    <p>内容区顶部中央突出按钮采用渐变背景和浮动动画，位于页面视觉中心，非常显眼。</p>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>项目名称</th>
+                                <th>负责人</th>
+                                <th>状态</th>
+                                <th>截止日期</th>
+                                <th>进度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SkyBlue 设计系统</td>
+                                <td>张三</td>
+                                <td><span class="status-badge status-active">进行中</span></td>
+                                <td>2023-12-15</td>
+                                <td>75%</td>
+                            </tr>
+                            <tr>
+                                <td>移动端应用开发</td>
+                                <td>李四</td>
+                                <td><span class="status-badge status-active">进行中</span></td>
+                                <td>2023-11-30</td>
+                                <td>60%</td>
+                            </tr>
+                            <tr>
+                                <td>后台管理系统</td>
+                                <td>王五</td>
+                                <td><span class="status-badge status-pending">待启动</span></td>
+                                <td>2024-01-20</td>
+                                <td>0%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="side-panel">
+                    <h2>操作指南</h2>
+                    <p>顶部中央的"新建项目"按钮采用了渐变天空蓝色和浮动动画，具有强烈的视觉吸引力。</p>
+                    <p>按钮右侧的"NEW"徽标会上下浮动，进一步吸引用户注意。</p>
+                    <p>鼠标悬停时按钮有上移动画和光效，点击后可快速创建新项目。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addButton').addEventListener('click', function() {
+            alert('执行新建项目操作');
+        });
+        
+        document.getElementById('filterBtn').addEventListener('click', function() {
+            alert('打开筛选面板');
+        });
+        
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            alert('执行导出操作');
+        });
+        
+        // 菜单项点击效果
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

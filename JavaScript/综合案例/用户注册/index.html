@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>新用户注册</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="regist">
+      <div class="content">
+        <h1>新用户注册</h1>
+        <div>
+          <form action="">
+            <div>
+              <input
+                type="text"
+                name="uname"
+                id="uname"
+                placeholder="请输入用户名"
+                required
+              />
+              <span></span>
+            </div>
+            <div>
+              <input
+                type="text"
+                name="uphone"
+                id="uphone"
+                placeholder="请输入手机号"
+                required
+              />
+              <span></span>
+            </div>
+            <div>
+              <input
+                type="text"
+                name="umsg"
+                id="umsg"
+                placeholder="短信验证码"
+                required
+              />
+              <span></span>
+              <a href="">发送验证码</a>
+            </div>
+            <div>
+              <input
+                type="password"
+                name="upwd"
+                id="upwd"
+                placeholder="设置6~20位字母数字和下划线"
+                required
+              />
+              <span></span>
+            </div>
+            <div>
+              <input
+                type="password"
+                id="upwd_repeat"
+                placeholder="请再次输入密码"
+                required
+              />
+              <span></span>
+            </div>
+            <div class="agreement">
+              <div>
+                <input
+                  type="checkbox"
+                  name="agreement"
+                  id="agreement"
+                  required
+                />
+                已阅读并同意
+                <i>《用户服务协议》</i>
+              </div>
+            </div>
+            <button type="submit">注册</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

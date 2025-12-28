@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      border: 1px solid #c0c0c0;
+      width: 500px;
+      margin: 100px auto;
+      text-align: center;
+    }
+
+    th {
+      background-color: #09c;
+      font: bold 16px "微软雅黑";
+      color: #fff;
+      height: 24px;
+    }
+
+    td {
+      border: 1px solid #d0d0d0;
+      color: #404060;
+      padding: 10px;
+    }
+
+    .allCheck {
+      width: 80px;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <th class="allCheck">
+        <input type="checkbox" name="" id="checkAll"> <span class="all">全选</span>
+      </th>
+      <th>商品</th>
+      <th>商家</th>
+      <th>价格</th>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" name="check" class="ck">
+      </td>
+      <td>小米手机</td>
+      <td>小米</td>
+      <td>￥1999</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" name="check" class="ck">
+      </td>
+      <td>小米净水器</td>
+      <td>小米</td>
+      <td>￥4999</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" name="check" class="ck">
+      </td>
+      <td>小米电视</td>
+      <td>小米</td>
+      <td>￥5999</td>
+    </tr>
+  </table>
+  <script>
+    // 1 获取大复选框
+    const checkAll = document.querySelector('#checkAll')
+    //2 获取小复选框
+    const cks = document.querySelectorAll('.ck')
+    // 3点击大复选框
+    checkAll.addEventListener('click', function () {
+      //得到大复选框的选中状态
+      // console.log(this.checked);
+      // if (this.checked) {
+      //   for (let i = 0; i < cks.length; i++) {
+      //     cks[i].checked = true
+      //   }
+      // } else {
+      //   for (let i = 0; i < cks.length; i++) {
+      //     cks[i].checked = false
+      //   }
+      // }
+      for (let i = 0; i < cks.length; i++) {
+        cks[i].checked = this.checked
+      }
+    })
+
+    //小复选框控制大复选框 for循环添加监控事件
+    for (let i = 0; i < cks.length; i++) {
+      console.log('i===============',i);
+      cks[i].addEventListener('click', function () {
+         console.log('cks[i]===============',cks[i]);
+         console.log('i===============',i);
+        //判断小复选框的个数是不是等于总的小复选框的个数 关键点 选中的伪类选择器，记录选中的个数
+        let ckNum = document.querySelectorAll('.ck:checked').length
+        // console.log(ckNum);
+        // ckNum === cks.length ? checkAll.checked = true : checkAll.checked = false
+        // 更简单的写法
+        checkAll.checked = ckNum === cks.length 
+      })
+    }
+
+  </script>
+</body>
+
+</html>

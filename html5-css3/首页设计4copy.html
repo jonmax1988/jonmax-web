@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>左右布局-蓝色调</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+      min-height: 100vh;
+    }
+
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+      width: 260px;
+      background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%);
+      color: white;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      /* background-color: skyblue; */
+    }
+
+    .logo-area {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo img {
+      width: 50px;
+      /* 保持或调整大小 */
+      height: 50px;
+      border-radius: 12px;
+      /* 圆角更现代 */
+      background: linear-gradient(135deg, #3498db, #688bad);
+      /* 渐变背景 */
+      padding: 8px;
+      /* 内边距 */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      /* 阴影增强立体感 */
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      /* 投影 */
+    }
+
+    .sidebar-add-btn {
+      margin: 0 15px 25px;
+      padding: 18px 15px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      box-shadow:
+        0 6px 20px rgba(37, 99, 235, 0.4),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar-add-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent);
+      transition: 0.5s;
+    }
+
+    .sidebar-add-btn:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 10px 30px rgba(37, 99, 235, 0.6),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .sidebar-add-btn:hover:before {
+      left: 100%;
+    }
+
+    .sidebar-add-btn i {
+      font-size: 24px;
+      background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sidebar-add-btn .badge {
+      position: absolute;
+      top: -5px;
+      right: -3px;
+      background: #ef4444;
+      color: white;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+
+    .sidebar-add-btn .subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      font-weight: normal;
+    }
+  </style>
+  <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <!-- 整体布局容器 -->
+  <div class="app-container">
+    <!-- 侧边栏位 -->
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="logo">
+          <img src="./android-chrome-192x192.png" alt="logo图片">
+          <span>创意管理平台</span>
+        </div>
+      </div>
+      <div class="sidebar-add-btn" id="addButton">
+        <div class="badge">NEW</div>
+        <i class="fas fa-plus-circle"></i>
+        <span>新建创意</span>
+        <div class="subtitle">快速新建创意</div>
+      </div>
+    </div>
+    <!-- 主内容区域 -->
+    <div class="main-content">1</div>
+  </div>
+</body>
+
+</html>

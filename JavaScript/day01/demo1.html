@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .skyblue {
+    background-color: skyblue;
+  }
+</style>
+
+<body>
+  <button class="skyblue">按钮1</button>
+  <button>按钮2</button>
+  <button>按钮3</button>
+  <button>按钮4</button>
+
+
+
+  <script>
+    let bts = document.querySelectorAll('button');
+    for (let i = 0; i < bts.length; i++) {
+      bts[i].addEventListener('click', function () {
+        document.querySelector('.skyblue').className = ''
+        this.className = 'skyblue'
+      })
+    }
+
+    document.write("&nbsp我是div")
+    document.write('<h1>我是一级标题</h1>')
+    console.log("你好jonmax")
+    // prompt('请输入你的姓名：')
+    // 页面警示框
+    // alert('你好js');
+
+    let age
+    age = 18
+    console.log('age='+age);
+    
+
+  </script>
+</body>
+
+</html>

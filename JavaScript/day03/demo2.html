@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* ============================
+        1. CSS重置与全局样式
+       目的：清除浏览器默认样式，设置基础样式
+    ============================ */
+
+    /* 通配符选择器：重置所有元素的默认边距和内边距 */
+    * {
+      margin: 0;
+      /* 清除外边距 */
+      padding: 0;
+      /* 清除内边距 */
+      box-sizing: border-box;
+      /* 盒模型设置为border-box，便于尺寸控制 */
+    }
+
+    /* 全局body样式 */
+    body {
+      font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+      /* 字体堆栈，支持中英文 */
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      /* 135度渐变背景 */
+      min-height: 100vh;
+      /* 最小高度为视口高度，确保全屏显示 */
+      display: flex;
+      /* 使用flex布局 */
+      flex-direction: column;
+      /* 垂直方向排列 */
+      align-items: center;
+      /* 水平居中 */
+      justify-content: center;
+      /* 垂直居中 */
+      padding: 20px;
+      /* 内边距，防止内容贴边 */
+    }
+
+    /* ============================
+        2. 标题区域样式
+       目的：创建视觉焦点，明确页面主题
+    ============================ */
+
+    .title {
+      color: white;
+      /* 白色文字，与深色背景形成对比 */
+      text-align: center;
+      /* 文字居中 */
+      margin-bottom: 30px;
+      /* 下边距，与主内容区分离 */
+      padding: 20px;
+      /* 内边距，增加呼吸感 */
+    }
+
+    .title h1 {
+      font-size: 2.5rem;
+      /* 大号字体，突出标题 */
+      margin-bottom: 10px;
+      /* 与副标题间距 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      /* 文字阴影，增加立体感 */
+    }
+
+    .title p {
+      font-size: 1.1rem;
+      /* 稍小的副标题字体 */
+      opacity: 0.9;
+      /* 90%透明度，稍微弱化副标题 */
+    }
+
+    /* ============================
+        3. 乘法表容器样式
+       目的：创建卡片式容器，承载所有内容
+    ============================ */
+
+    .multiplication-table {
+      background-color: rgba(255, 255, 255, 0.95);
+      /* 半透明白色背景 */
+      border-radius: 20px;
+      /* 大圆角，现代感 */
+      padding: 25px;
+      /* 内边距，避免内容贴边 */
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      /* 大阴影，突出悬浮感 */
+      max-width: 1200px;
+      /* 最大宽度限制，避免在大屏幕上过宽 */
+      width: 100%;
+      /* 在小屏幕上占满可用宽度 */
+      overflow-x: auto;
+      /* 水平滚动，防止内容溢出 */
+    }
+
+    /* ============================
+        4. 表格行容器 - 核心布局
+       目的：实现一行排列的关键布局组件
+    ============================ */
+
+    .table-row {
+      display: flex;
+      /* 启用flex布局，实现水平排列 */
+      flex-wrap: wrap;
+      /* 允许项目换行，实现响应式 */
+      gap: 15px;
+      /* 项目间距，比margin更简洁的间距控制 */
+      margin-bottom: 20px;
+      /* 行间距 */
+    }
+
+    /* 行容器，用于包装行标题和内容 */
+    .row-container {
+      margin-bottom: 20px;
+      /* 行容器间距 */
+    }
+
+    /* ============================
+        5. 单个乘法项目样式
+       目的：为每个乘法表达式创建视觉卡片
+    ============================ */
+
+    .multiplication-item {
+      background: linear-gradient(145deg, #ffffff, #f0f0f0);
+      /* 内阴影效果渐变 */
+      border-radius: 12px;
+      /* 圆角，与容器圆角呼应 */
+      padding: 15px 20px;
+      /* 内边距，让内容舒适 */
+      text-align: center;
+      /* 文字居中 */
+      min-width: 150px;
+      /* 最小宽度，确保卡片大小一致 */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      /* 卡片阴影 */
+      transition: all 0.3s ease;
+      /* 所有属性0.3秒缓动过渡 */
+      border: 2px solid transparent;
+      /* 透明边框，为悬留状态预留 */
+    }
+
+    /* 悬停状态：增强交互反馈 */
+    .multiplication-item:hover {
+      transform: translateY(-5px);
+      /* 上移5像素，悬浮效果 */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      /* 加深阴影 */
+      border-color: #764ba2;
+      /* 添加紫色边框 */
+    }
+
+    /* ============================
+        6. 乘法表达式内部样式
+       目的：美化乘法表达式和结果的显示
+    ============================ */
+
+    .expression {
+      font-size: 1.4rem;
+      /* 较大字体，突出表达式 */
+      font-weight: bold;
+      /* 加粗 */
+      color: #333;
+      /* 深灰色，易读性强 */
+      margin-bottom: 5px;
+      /* 与结果间距 */
+    }
+
+    .result {
+      font-size: 1.2rem;
+      /* 稍小的结果字体 */
+      color: #764ba2;
+      /* 紫色，与主题色呼应 */
+      font-weight: bold;
+      /* 加粗 */
+    }
+
+    /* ============================
+        7. 行标题样式
+       目的：清晰标识每一行
+    ============================ */
+
+    .row-title {
+      color: white;
+      /* 白色文字 */
+      font-size: 1.3rem;
+      /* 标题字体大小 */
+      font-weight: bold;
+      /* 加粗 */
+      margin-bottom: 10px;
+      /* 与内容间距 */
+      text-align: center;
+      /* 居中 */
+      background-color: rgba(118, 75, 162, 0.8);
+      /* 半透明紫色背景 */
+      padding: 8px 15px;
+      /* 内边距 */
+      border-radius: 10px;
+      /* 圆角 */
+      display: inline-block;
+      /* 让背景自适应文字宽度 */
+    }
+
+    /* ============================
+        8. 响应式设计
+       目的：适配不同尺寸的设备
+    ============================ */
+
+    @media (max-width: 768px) {
+
+      /* 平板和手机设备 */
+      .multiplication-table {
+        padding: 15px;
+        /* 减少内边距 */
+      }
+
+      .multiplication-item {
+        min-width: 120px;
+        /* 减小最小宽度 */
+        padding: 12px 15px;
+        /* 调整内边距 */
+      }
+
+      .expression {
+        font-size: 1.1rem;
+        /* 调小字体 */
+      }
+
+      .result {
+        font-size: 1rem;
+        /* 调小字体 */
+      }
+
+      .title h1 {
+        font-size: 1.8rem;
+        /* 调小标题 */
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      /* 小手机设备 */
+      .multiplication-item {
+        min-width: 100px;
+        /* 进一步减小宽度 */
+        padding: 10px 12px;
+      }
+
+      .table-row {
+        gap: 10px;
+        /* 减小间距 */
+      }
+    }
+
+    /* ============================
+        9. 页脚样式
+       目的：提供版权信息，完善页面结构
+    ============================ */
+
+    footer {
+      color: white;
+      /* 白色文字 */
+      margin-top: 30px;
+      /* 上边距，与主内容分离 */
+      text-align: center;
+      /* 居中 */
+      opacity: 0.8;
+      /* 80%透明度，弱化显示 */
+      font-size: 0.9rem;
+      /* 较小字体 */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 标题区域 -->
+  <div class="title">
+    <h1>九九乘法表</h1>
+    <p>原生JavaScript实现 | 一行排列展示 | 响应式设计</p>
+  </div>
+
+  <!-- 乘法表容器 -->
+  <div class="multiplication-table" id="multiplicationTable"></div>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2023 原生JavaScript九九乘法表 | 每个乘法表达式独立展示</p>
+  </footer>
+
+  <script>
+    // 获取乘法表容器元素
+    const tableContainer = document.getElementById('multiplicationTable');
+
+    // 外层循环：控制行数（1-9行）
+    for (let i = 1; i <= 9; i++) {
+      // 创建行容器
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'row-container';
+
+      // 创建行标题
+      const rowTitle = document.createElement('div');
+      rowTitle.className = 'row-title';
+      rowTitle.textContent = `第 ${i} 行`;
+
+      // 创建乘法项目容器
+      const itemsRow = document.createElement('div');
+      itemsRow.className = 'table-row';
+
+      // 内层循环：控制每行的列数（1-9列）
+      for (let j = 1; j <= 9; j++) {
+        // 计算乘积
+        const result = i * j;
+
+        // 创建单个乘法项目
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'multiplication-item';
+
+        // 创建乘法表达式元素
+        const expressionSpan = document.createElement('span');
+        expressionSpan.className = 'expression';
+        expressionSpan.textContent = `${i} × ${j}`;
+
+        // 创建等号和结果元素
+        const resultSpan = document.createElement('span');
+        resultSpan.className = 'result';
+        resultSpan.textContent = ` = ${result}`;
+
+        // 将表达式和结果添加到项目中
+        itemDiv.appendChild(expressionSpan);
+        itemDiv.appendChild(resultSpan);
+
+        // 将项目添加到行中
+        itemsRow.appendChild(itemDiv);
+      }
+
+      // 将标题和项目行添加到行容器
+      rowDiv.appendChild(rowTitle);
+      rowDiv.appendChild(itemsRow);
+
+      // 将行容器添加到表格容器
+      tableContainer.appendChild(rowDiv);
+
+      // 在行之间添加间隔（最后一行不加）
+      if (i < 9) {
+        const separator = document.createElement('div');
+        separator.style.height = '20px';
+        tableContainer.appendChild(separator);
+      }
+    }
+  </script>
+</body>
+
+</html>

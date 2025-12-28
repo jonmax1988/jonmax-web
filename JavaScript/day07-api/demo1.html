@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      position: relative;
+      margin: 20px auto;
+      width: 375px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      background-color: skyblue;
+      color: red;
+    }
+
+    .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      text-align: center;
+      line-height: 20px;
+      border: 1px solid black;
+
+      cursor: pointer;
+
+      /* 新增的优化样式 */
+      font-family: Arial, sans-serif;
+      /* 指定一个常见的无衬线字体 */
+      font-size: 14px;
+      /* 明确字体大小，便于控制 */
+      font-weight: bold;
+      /* 可选：让“x”更粗，更显眼 */
+      box-sizing: border-box;
+      /* 非常重要！让宽高包含边框和内边距 */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h3>我是一则广告</h3>
+    <div class="close">X</div>
+  </div>
+   <script>
+    const box= document.querySelector('.box')
+    const close= document.querySelector('.close')
+    close.addEventListener('click',function(){
+      box.style.display = 'none'
+    })
+   </script>
+</body>
+
+</html>

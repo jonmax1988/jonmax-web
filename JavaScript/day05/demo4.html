@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // console.log(Math.floor(Math.random()*11));
+
+    // let arr = ['关羽','张飞','赵云','黄忠','马超']
+    // let random  = Math.floor(Math.random()*arr.length)
+    // document.write(arr[random])
+
+    // let arr = ['关羽', '张飞', '赵云', '黄忠', '马超']
+    // let random = Math.floor(Math.random() * arr.length)
+    // document.write(arr[random])
+    // arr.splice(random,1)
+    // document.write('<br>')
+    // document.write(arr)
+    let num = Math.floor(Math.random() * 10) + 1
+    console.log(num)
+
+    let userNum = +prompt('请输入1-10之间，你猜的数字')
+
+    while (true) {
+
+      if (userNum === num) {
+        document.write('恭喜你猜对了，游戏结束')
+        break
+      } else if (userNum < num) {
+        userNum = +prompt('数字猜小了，请继续猜：')
+      } else {
+        userNum = +prompt('数字猜大了，请继续猜：')
+      }
+    }
+
+  </script>
+</body>
+
+</html>

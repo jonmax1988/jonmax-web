@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方案一：悬浮式操作栏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 90vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+        }
+        
+        .content {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            margin-left: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(135, 206, 235, 0.2);
+        }
+        
+        h1 {
+            color: #2c5282;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        /* 悬浮操作栏样式 */
+        .floating-action-bar {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px 8px;
+            box-shadow: 0 8px 30px rgba(66, 153, 225, 0.3);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .action-bar-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .action-item {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .action-item.main {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3182ce 0%, #63b3ed 100%);
+            box-shadow: 0 4px 15px rgba(49, 130, 206, 0.4);
+        }
+        
+        .action-item.main:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.6);
+        }
+        
+        .action-item.export {
+            background: linear-gradient(135deg, #38b2ac 0%, #81e6d9 100%);
+        }
+        
+        .action-item.import {
+            background: linear-gradient(135deg, #ed8936 0%, #fbd38d 100%);
+        }
+        
+        .action-item.filter {
+            background: linear-gradient(135deg, #805ad5 0%, #d6bcfa 100%);
+        }
+        
+        .action-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .action-tooltip {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            margin-right: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        .action-tooltip:after {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent #2d3748;
+        }
+        
+        .action-item:hover .action-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .floating-action-bar {
+                padding: 10px 5px;
+            }
+            
+            .action-item {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+            
+            .action-item.main {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>导航菜单</h1>
+            <p>左侧导航区域，可放置菜单项。</p>
+        </div>
+        
+        <div class="content">
+            <h1>主内容区域</h1>
+            <p>这是主要的操作和显示区域。右侧的悬浮操作栏包含各种快捷功能。</p>
+            <p>将鼠标悬停在图标上查看工具提示，点击可触发相应功能。</p>
+        </div>
+    </div>
+    
+    <div class="floating-action-bar">
+        <div class="action-bar-inner">
+            <div class="action-item main" id="addBtn">
+                <i class="fas fa-plus"></i>
+                <span class="action-tooltip">新建项目</span>
+            </div>
+            <div class="action-item export">
+                <i class="fas fa-file-export"></i>
+                <span class="action-tooltip">导出数据</span>
+            </div>
+            <div class="action-item import">
+                <i class="fas fa-file-import"></i>
+                <span class="action-tooltip">导入数据</span>
+            </div>
+            <div class="action-item filter">
+                <i class="fas fa-filter"></i>
+                <span class="action-tooltip">高级筛选</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addBtn').addEventListener('click', function() {
+            alert('执行新建操作');
+        });
+        
+        document.querySelectorAll('.action-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const tooltip = this.querySelector('.action-tooltip').textContent;
+                alert(`执行 ${tooltip} 操作`);
+            });
+        });
+    </script>
+</body>
+</html>

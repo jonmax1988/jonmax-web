@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      margin: 10px auto;
+      padding: 10px;
+      width: 600px;
+      height: 300px;
+      border: 1px solid skyblue;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div style="background-color: #aaaaaa"></div> -->
+  <script>
+    let flag = prompt(`请输入true or false`)
+    console.log(flag);
+    let numArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'a', 'b', 'c', 'd', 'e', 'f']
+    let str = '#'
+    getRandomColor(flag)
+    function getRandomColor(f) {
+      if (flag === 'true') {
+        let r = getRandom(0, 255)
+        let g = getRandom(0, 255)
+        let b = getRandom(0, 255)
+        document.write(`<div style="background-color: rgb(${r},${g},${b}) "></div>`)
+        console.log(`rgb(${r},${g},${b})`)
+        return (`rgb(${r},${g},${b})`)
+      } else {
+        for (let i = 1; i <= 6; i++) {
+          let random = Math.floor(Math.random() * numArr.length)
+          str += numArr[random]
+        }
+        document.write(`<div style="background-color: ${str} "></div>`)
+        console.log(str)
+        return str
+      }
+    }
+
+    function getRandom(N, M) {
+      return Math.floor(Math.random() * (M - N + 1)) + N
+    }
+  </script>
+</body>
+
+</html>
